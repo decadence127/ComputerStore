@@ -36,9 +36,9 @@ public class CartController {
     private CartMapper cartMapper;
     private CartService cartService;
 
-    @GetMapping("/cart")
-    public List<Cart> getCart() {
-        return cartService.findAll();
+    @GetMapping("/cart/user/{id}")
+    public ResponseEntity<CartDTO> getCart(@PathVariable Long id) {
+        return ResponseEntity.ok(cartMapper.toDto(cartService.findByAccount_Id(id).orElseThrow(() -> new ResourceNotFoundException("Cart not found with id :" + id))));
     }
 
     @PostMapping("/cart")

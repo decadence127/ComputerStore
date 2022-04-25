@@ -39,7 +39,7 @@ public class OrderDTO implements Serializable {
 
     private AddressDTO address;
 
-    private CartDTO cart;
+    private AccountDTO account;
 
     private LocalDate orderDate;
 

@@ -5,9 +5,11 @@ import com.example.computerstorebackend.dto.OrderDTO;
 import com.example.computerstorebackend.exception.ResourceNotFoundException;
 import com.example.computerstorebackend.mapper.CommodityMapper;
 import com.example.computerstorebackend.mapper.OrderMapper;
+import com.example.computerstorebackend.model.Cart;
 import com.example.computerstorebackend.model.Commodity;
 import com.example.computerstorebackend.model.Condition;
 import com.example.computerstorebackend.model.Order;
+import com.example.computerstorebackend.service.cart.CartService;
 import com.example.computerstorebackend.service.commodity.CommodityService;
 import com.example.computerstorebackend.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -37,14 +39,25 @@ public class OrderController {
 
     private OrderMapper orderMapper;
     private OrderService orderService;
+    private CartService cartService;
 
     @GetMapping("/order")
-    public List<Order> getCommodities() {
+    public List<Order> getOrders() {
         return orderService.findAll();
     }
 
     @PostMapping("/order")
-    public Order createCommodity(@RequestBody Order order) {
+    public Order createOrder(@RequestBody Order order) {
+        Cart cart = cartService.findByAccount_Id(
+                order.getAccount().getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Order not found with id :" +
+                        order.getAccount().getId()));
+        for (Commodity commodity : order.getCommodities()) {
+            cart.getCommodities().remove(commodity);
+            int quantity = commodity.getQuantity();
+            commodity.setQuantity(--quantity);
+        }
+        cartService.update(cart);
         order.setCondition(Condition.PROCESSING);
         order.setOrderDate(LocalDate.now());
         return orderService.save(order);

@@ -29,5 +29,5 @@ public class CartDTO implements Serializable {
 
     private AccountDTO account;
 
-    private List<OrderDTO> orders;
+    private List<CommodityDTO> commodities;
 }

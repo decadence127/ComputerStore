@@ -5,8 +5,10 @@ import com.example.computerstorebackend.exception.ResourceNotFoundException;
 import com.example.computerstorebackend.mapper.AccountMapper;
 import com.example.computerstorebackend.model.Account;
 import com.example.computerstorebackend.model.AccountData;
+import com.example.computerstorebackend.model.Cart;
 import com.example.computerstorebackend.model.Role;
 import com.example.computerstorebackend.service.account.AccountService;
+import com.example.computerstorebackend.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,8 @@ public class AccountController {
 
     private AccountMapper accountMapper;
     private AccountService accountService;
+    private CartService cartService;
+
 
     @GetMapping("/account/users")
     public List<Account> getUserAccounts() {
@@ -68,6 +72,8 @@ public class AccountController {
 //            user.setPassword(passwordEncoder.encode(user.getPassword()));
             account.setRole(Role.USER);
             Account acc = accountService.save(account);
+            Cart cart = Cart.builder().account(acc).build();
+            cartService.save(cart);
             return ResponseEntity.ok(acc);
         }
         return null;

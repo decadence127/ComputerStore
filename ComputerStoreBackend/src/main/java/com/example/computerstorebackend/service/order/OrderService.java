@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface OrderService extends GenericService<Order> {
 
-    List<Order> findByCart_Id(Long id);
-
-    List<Order> findByCart_Account_Id(Long id);
+    List<Order> findByAccount_Id(Long id);
 }

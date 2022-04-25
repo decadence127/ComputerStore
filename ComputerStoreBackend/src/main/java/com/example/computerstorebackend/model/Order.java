@@ -51,9 +51,9 @@ public class Order {
     @OneToOne(fetch = FetchType.LAZY)
     private Address address;
 
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "account_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Cart cart;
+    private Account account;
 
     @Column
     private LocalDate orderDate;
