@@ -17,13 +17,8 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, OrderRepo> imple
     }
 
     @Override
-    public List<Order> findByCart_Id(Long id) {
-        return repo.findByCart_Id(id);
-    }
-
-    @Override
-    public List<Order> findByCart_Account_Id(Long id) {
-        return repo.findByCart_Account_Id(id);
+    public List<Order> findByAccount_Id(Long id) {
+        return repo.findByAccount_Id(id);
     }
 
 }
