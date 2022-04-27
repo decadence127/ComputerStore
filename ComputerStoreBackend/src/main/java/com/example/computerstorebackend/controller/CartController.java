@@ -52,18 +52,16 @@ public class CartController {
     }
 
 
-//    @PutMapping("/cart/{id}")
-//    public ResponseEntity<Cart> editAddress(@PathVariable Long id, @RequestBody Cart cart) {
-//        Optional<Cart> c = addressService.findById(id);
-//        Address addr = null;
-//        if (a.isPresent()) {
-//            addr = a.get();
-//            addr.setCity(address.getCity());
-//            addr.setStreet(address.getStreet());
-//            addr.setHouseNumber(address.getHouseNumber());
-//        }
-//        return ResponseEntity.ok(addressService.update(addr));
-//    }
+    @PutMapping("/cart/{id}")
+    public ResponseEntity<CartDTO> editCart(@PathVariable Long id, @RequestBody Cart cart) {
+        Optional<Cart> optionalCart = cartService.findById(id);
+        Cart c = Cart.builder().build();
+        if (optionalCart.isPresent()) {
+            c = optionalCart.get();
+            c.setCommodities(cart.getCommodities());
+        }
+        return ResponseEntity.ok(cartMapper.toDto(cartService.update(c)));
+    }
 
 
     @GetMapping("/cart/{id}")

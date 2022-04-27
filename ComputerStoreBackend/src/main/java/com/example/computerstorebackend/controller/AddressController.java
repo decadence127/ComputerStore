@@ -32,7 +32,6 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/ComputerStore")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AddressController {
 
     private AddressMapper addressMapper;
