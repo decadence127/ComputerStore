@@ -29,14 +29,19 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequestMapping("/ComputerStore")
 public class AccountController {
 
     private AccountMapper accountMapper;
     private AccountService accountService;
     private CartService cartService;
 
+    @Autowired
+    public AccountController(AccountMapper accountMapper, AccountService accountService, CartService cartService) {
+        this.accountMapper = accountMapper;
+        this.accountService = accountService;
+        this.cartService = cartService;
+    }
 
     @GetMapping("/account/users")
     public List<Account> getUserAccounts() {
@@ -92,6 +97,18 @@ public class AccountController {
             data.setPhone(account.getAccountData().getPhone());
             data.setEmail(account.getAccountData().getEmail());
             acc.setAccountData(data);
+        }
+        return ResponseEntity.ok(accountService.update(acc));
+    }
+
+    @PutMapping("/account/role/{id}")
+    public ResponseEntity<Account> editRoleUser(@PathVariable Long id, @RequestBody Map<String, String> str) {
+        Role role = Role.valueOf(str.get("role"));
+        Optional<Account> a = accountService.findById(id);
+        Account acc = null;
+        if (a.isPresent()) {
+            acc = a.get();
+            acc.setRole(role);
         }
         return ResponseEntity.ok(accountService.update(acc));
     }

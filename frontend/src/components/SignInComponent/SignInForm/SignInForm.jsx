@@ -1,11 +1,14 @@
 import CustomFormInput from "../../common/CustomFormInput/CustomFormInput"
 
 
-const SignInForm = ({ formHandler, userData, changeHandler }) => {
+const SignInForm = ({formHandler, userData, changeHandler}) => {
     return (<form onSubmit={formHandler}>
-        <CustomFormInput label="Username" userData={userData} changeHandler={changeHandler} name='username' />
-        <CustomFormInput label="Password" userData={userData} changeHandler={changeHandler} name='password' type="password" />
-        <button className="btn btn-success offset-mt-2">Save</button>
+        <CustomFormInput label="Логин" name="username" userData={userData} changeHandler={changeHandler} />
+        <CustomFormInput label="Пароль" name="password" userData={userData} changeHandler={changeHandler}
+                         type="password"/>
+        <div style={{marginTop: 7, display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <button type="submit" style={{width: "100%"}} className="btn btn-outline-success">Войти</button>
+        </div>
     </form>)
 }
 export default SignInForm;

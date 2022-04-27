@@ -33,13 +33,19 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequestMapping("/ComputerStore")
 public class OrderController {
 
     private OrderMapper orderMapper;
     private OrderService orderService;
     private CartService cartService;
+
+    @Autowired
+    public OrderController(OrderMapper orderMapper, OrderService orderService, CartService cartService) {
+        this.orderMapper = orderMapper;
+        this.orderService = orderService;
+        this.cartService = cartService;
+    }
 
     @GetMapping("/order")
     public List<Order> getOrders() {

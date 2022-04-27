@@ -1,11 +1,12 @@
-import {observer} from "mobx-react-lite";
-import React, {useContext, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {Context} from "../..";
-import AccountService from "../../services/AccountService";
+import { observer } from "mobx-react-lite";
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { Context } from "../..";
+import UserService from "../../services/AccountService";
 import {
     ADMIN_HOME_ROUTE,
     USER_HOME_ROUTE,
+    VET_HOME_ROUTE,
 } from "../../utils/routeNames";
 import SignInForm from "./SignInForm/SignInForm";
 
@@ -15,8 +16,8 @@ const SignInComponent = observer(() => {
         password: "",
     });
 
-    const {user} = useContext(Context); // Receiving user store from Context
-    const history = useNavigate();
+    const { user } = useContext(Context); // Receiving user store from Context
+    const history = useHistory();
 
     const changeHandler = (e) => {
         setUserData({
@@ -27,13 +28,21 @@ const SignInComponent = observer(() => {
 
     const formHandler = async (e) => {
         e.preventDefault(); // How do we assign an admin role then? I see that auth is quite simple.
-        const {data} = await AccountService.signIn(userData);
+        console.log(userData)
+        const { data } = await UserService.signIn(userData);
         if (data) {
             user.setUserData(data); // Adding user data to user global store
             user.setIsAuth(true); // Setting isAuth flag to true
         }
         console.log("global user state => " + JSON.stringify(user));
-        history.push(USER_HOME_ROUTE);
+
+        if (user.userData.role === "ADMIN") {
+            history.push(ADMIN_HOME_ROUTE);
+        } else if (user.userData.role === "USER") {
+            history.push(USER_HOME_ROUTE);
+        } else if (user.userData.role === "VET") {
+            history.push(VET_HOME_ROUTE);
+        }
     };
 
     return (
@@ -41,7 +50,7 @@ const SignInComponent = observer(() => {
             <div className="container">
                 <div className="row">
                     <div className="card col-md-6 offset-md-3 offset-md-3">
-                        <h3 className="text-center">Sign In</h3>
+                        <h3 className="text-center">Авторизация</h3>
                         <div className="card-body">
                             <SignInForm
                                 userData={userData}

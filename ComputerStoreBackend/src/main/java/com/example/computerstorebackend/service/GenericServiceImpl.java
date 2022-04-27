@@ -1,6 +1,5 @@
 package com.example.computerstorebackend.service;
 
-import com.example.computerstorebackend.exception.ResourceNotFoundException;
 import com.example.computerstorebackend.repository.GenericRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

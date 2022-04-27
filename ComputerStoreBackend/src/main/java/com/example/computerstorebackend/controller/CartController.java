@@ -29,12 +29,17 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequestMapping("/ComputerStore")
 public class CartController {
 
     private CartMapper cartMapper;
     private CartService cartService;
+
+    @Autowired
+    public CartController(CartMapper cartMapper, CartService cartService) {
+        this.cartMapper = cartMapper;
+        this.cartService = cartService;
+    }
 
     @GetMapping("/cart/user/{id}")
     public ResponseEntity<CartDTO> getCart(@PathVariable Long id) {

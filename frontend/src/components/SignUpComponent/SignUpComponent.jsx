@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import AccountService from "../../services/AccountService";
-import {HOME_ROUTE} from "../../utils/routeNames";
+import { useHistory } from "react-router-dom";
+import UserService from "../../services/AccountService";
+import { USER_HOME_ROUTE } from "../../utils/routeNames";
 import SignUpForm from "./SignUpForm/SignUpForm";
 import { Context } from "../..";
 import { observer } from "mobx-react-lite";
@@ -17,7 +17,7 @@ const SignUpComponent = observer(() => {
         email: "",
     });
     const { user } = useContext(Context); // Receiving user store from Context
-    const history = useNavigate();
+    const history = useHistory();
 
     const changeHandler = (e) => {
         setUserData({
@@ -38,12 +38,12 @@ const SignUpComponent = observer(() => {
             }
         }
 
-        const { data } = await AccountService.signUp(account);
+        const { data } = await UserService.signUp(account);
 
         if (data) {
             user.setUserData(data); // Adding user data to user global store
             user.setIsAuth(true); // Setting isAuth flag to true
-            history.push(HOME_ROUTE);
+            history.push(USER_HOME_ROUTE);
             console.log("global user state => " + JSON.stringify(user));
         }
     };
@@ -53,7 +53,7 @@ const SignUpComponent = observer(() => {
             <div className="container">
                 <div className="row">
                     <div className="card col-md-6 offset-md-3 offset-md-3">
-                        <h3 className="text-center">Sign Up</h3>
+                        <h3 className="text-center">Регистрация</h3>
                         <div className="card-body">
                             <SignUpForm
                                 userData={userData}

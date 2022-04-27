@@ -1,32 +1,35 @@
 import {
-
+  APPOINTMENT_ROUTE,
+  FORMS_ROUTE,
+  PETS_ROUTE,
+  PROCEDURE_ROUTE,
   SIGN_IN_ROUTE,
   USER_HOME_ROUTE,
   SIGN_UP_ROUTE,
-
+  VET_HOME_ROUTE,
   USERS_ROUTE,
-  STATS_ROUTE, HOME_ROUTE, COMMODITIES_ROUTE, ORDERS_ROUTE, CART_ROUTE,
+  STATS_ROUTE, HOME_ROUTE, CART_ROUTE, COMMODITIES_ROUTE, ORDERS_ROUTE,
 } from "./routeNames";
 
 export const userButtons = [
   {
-    name: "Commodities",
+    name: "Товары",
     path: COMMODITIES_ROUTE,
   },
   {
-    name: "Orders",
+    name: "Заказы",
     path: ORDERS_ROUTE,
   },
   {
-    name: "Cart",
+    name: "Корзина",
     path: CART_ROUTE,
   },
   {
-    name: "Account",
+    name: "Аккаунт",
     path: HOME_ROUTE,
   },
   {
-    name: "Logout",
+    name: "Выйти",
     path: SIGN_IN_ROUTE,
     action: "LOGOUT", // Pay attention to this!! this is how we logout from system and clean the store
   },
@@ -34,22 +37,21 @@ export const userButtons = [
 
 export const unAuthButtons = [
   {
-    name: "Sign In",
+    name: "Вход",
     path: SIGN_IN_ROUTE,
   },
   {
-    name: "Sign Up",
+    name: "Регистрация",
     path: SIGN_UP_ROUTE,
   },
 ];
+
+
 export const adminButtons = [
   {
-    name: "Stats",
-    path: STATS_ROUTE,
-  },
-  {
-    name: "Users",
+
+    name: "Пользователи",
     path: USERS_ROUTE,
   },
-  ...userButtons.filter((button) => button.name !== "Cart"), // Remove pet button from admin header and add all other buttons from user header
+  ...userButtons.filter((button) => button.name !== "Приёмы"), // Remove pet button from admin header and add all other buttons from user header
 ];

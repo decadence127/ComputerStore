@@ -29,12 +29,17 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequestMapping("/ComputerStore")
 public class CommodityController {
 
     private CommodityMapper commodityMapper;
     private CommodityService commodityService;
+
+    @Autowired
+    public CommodityController(CommodityMapper commodityMapper, CommodityService commodityService) {
+        this.commodityMapper = commodityMapper;
+        this.commodityService = commodityService;
+    }
 
     @GetMapping("/commodity")
     public List<Commodity> getCommodities() {

@@ -31,12 +31,18 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/ComputerStore")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AddressController {
 
     private AddressMapper addressMapper;
     private AddressService addressService;
+
+    @Autowired
+    public AddressController(AddressMapper addressMapper, AddressService addressService) {
+        this.addressMapper = addressMapper;
+        this.addressService = addressService;
+    }
 
     @GetMapping("/address")
     public List<Address> getAddresses() {
