@@ -8,6 +8,8 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,7 +31,7 @@ import java.util.List;
 @Getter
 @ToString
 @Entity
-@Table(name="\"order\"")
+@Table(name = "\"order\"")
 public class Order {
 
     @Id
@@ -37,6 +39,7 @@ public class Order {
     private Long id;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private Condition condition;
 
     @ManyToMany
@@ -46,6 +49,14 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "commodity_id")
     )
     private List<Commodity> commodities = new ArrayList<>();
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Delivery delivery;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Payment payment;
 
     @JoinColumn(name = "address_id")
     @OneToOne(fetch = FetchType.LAZY)

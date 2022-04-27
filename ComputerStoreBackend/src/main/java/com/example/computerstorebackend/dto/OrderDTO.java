@@ -4,6 +4,8 @@ import com.example.computerstorebackend.model.Address;
 import com.example.computerstorebackend.model.Cart;
 import com.example.computerstorebackend.model.Commodity;
 import com.example.computerstorebackend.model.Condition;
+import com.example.computerstorebackend.model.Delivery;
+import com.example.computerstorebackend.model.Payment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,6 +40,10 @@ public class OrderDTO implements Serializable {
     private List<CommodityDTO> commodities = new ArrayList<>();
 
     private AddressDTO address;
+
+    private Delivery delivery;
+
+    private Payment payment;
 
     private AccountDTO account;
 
