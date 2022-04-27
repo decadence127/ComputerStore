@@ -9,10 +9,13 @@ export const VET_HOME_ROUTE = "/vetHome";
 export const USER_HOME_ROUTE = "/userHome";
 
 export const CART_ROUTE = "/cart"
-export const COMMODITIES_ROUTE = "/commodities"
+
+export const USER_COMMODITIES_ROUTE = "/commodities"
+export const COMMODITIES_ROUTE = "/commodity"
 export const ADD_COMMODITY_ROUTE = "/add-commodity"
 export const EDIT_COMMODITY_ROUTE = "/edit-commodity/:id"
 export const EDIT_COMMODITY =  "/edit-commodity/"
+
 export const ORDERS_ROUTE = "/orders"
 export const ADD_ORDER_ROUTE = "/add-order"
 export const EDIT_ORDER_ROUTE = "/edit-order/:id"

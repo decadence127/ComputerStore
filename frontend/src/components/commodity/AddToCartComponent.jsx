@@ -3,6 +3,7 @@ import {useHistory} from "react-router-dom";
 import {ADD_COMMODITY_ROUTE, EDIT_COMMODITY} from "../../utils/routeNames";
 import CommodityService from "../../services/CommodityService";
 import {Context} from "../../index";
+import CartService from "../../services/CartService";
 
 
 const ListCommoditiesComponent = () => {
@@ -13,6 +14,8 @@ const ListCommoditiesComponent = () => {
 
     const [commodities, setCommodities] = useState([])
 
+    const [chosenCommodities, setChosenCommodities] = useState([])
+
     useEffect(() => {
         CommodityService.getCommodities().then((res) => {
             console.log(res.data)
@@ -20,33 +23,36 @@ const ListCommoditiesComponent = () => {
         }).catch(error => {
             console.log(error);
         })
+        CartService.getCartByUserId(user.userData.id).then((res) => {
+            console.log(res.data)
+            user.setCart(res.data)
+            setChosenCommodities(res.data.commodities)
+        })
+
     }, [])
 
 
-    const add = () => {
-        history.push(ADD_COMMODITY_ROUTE);
-    }
-
-    const edit = (id) => {
-        history.push(`${EDIT_COMMODITY}${id}`);
-    }
-
-
-    const deleteCommodity = (id) => {
-        CommodityService.deleteCommodity(id).then(res => {
-            setCommodities(commodities.filter(commodity => commodity.id !== id))
+    const toCart = (commodity) => {
+        if (chosenCommodities.find((p) => p.id === commodity.id)) {
+            chosenCommodities.splice(chosenCommodities.find((p) => p.id === commodity.id), 1);
+        } else {
+            chosenCommodities.push(commodity);
+        }
+        let cart = {
+            id: user.cart.id,
+            commodities: chosenCommodities
+        }
+        CartService.editCart(cart, user.cart.id).then((res)=>{
+            user.setCart(res.data)
+            console.log(chosenCommodities)
         })
-    }
 
+    }
 
     return (
         <div>
             <div className="container">
                 <div className="row">
-                    <button style={{marginTop: "10px"}}
-                            onClick={() => add()}
-                            className="btn btn-danger">Add
-                    </button>
                     <div className="card-body">
                         <div>
                             {
@@ -55,12 +61,8 @@ const ListCommoditiesComponent = () => {
                                         <div key={commodity.id}>
                                             Name: {commodity.name}
                                             <div>
-                                                <button onClick={() => edit(commodity.id)}
-                                                        className="btn btn-danger">Edit
-                                                </button>
-                                                <button style={{marginLeft: "10px"}}
-                                                        onClick={() => deleteCommodity(commodity.id)}
-                                                        className="btn btn-danger">Delete
+                                                <button onClick={() => toCart(commodity)}
+                                                        className="btn btn-danger">To cart
                                                 </button>
                                             </div>
                                         </div>
@@ -72,6 +74,7 @@ const ListCommoditiesComponent = () => {
             </div>
         </div>
     );
+
 
 }
 

@@ -1,11 +1,7 @@
 import {Context} from "../../index";
 import React, {useContext, useEffect, useState} from "react";
-import SignInComponent from "../SignInComponent/SignInComponent";
-import {Form, Button, Modal} from "react-bootstrap";
-import AccountService from "../../services/AccountService";
 import {useHistory} from "react-router-dom";
-import {ADD_ORDER_ROUTE, CART_ROUTE, HOME_ROUTE} from "../../utils/routeNames";
-import SignUpForm from "../SignUpComponent/SignUpForm/SignUpForm";
+import {ADD_ORDER_ROUTE, CART_ROUTE} from "../../utils/routeNames";
 import CartService from "../../services/CartService";
 
 

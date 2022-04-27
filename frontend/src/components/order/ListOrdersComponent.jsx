@@ -1,11 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {useHistory} from "react-router-dom";
-import {ADD_COMMODITY_ROUTE, ADD_ORDER_ROUTE, EDIT_COMMODITY, EDIT_ORDER} from "../../utils/routeNames";
-import CommodityService from "../../services/CommodityService";
+import { ADD_ORDER_ROUTE, EDIT_ORDER} from "../../utils/routeNames";
 import OrderService from "../../services/OrderService";
+import {Context} from "../../index";
 
 
 const ListOrdersComponent = () => {
+
+    const {user} = useContext(Context) // Receiving user store from Context
 
     const history = useHistory();
 
@@ -21,9 +23,7 @@ const ListOrdersComponent = () => {
     }, [])
 
 
-    const add = () => {
-        history.push(ADD_ORDER_ROUTE);
-    }
+
 
     const edit = (id) => {
         history.push(`${EDIT_ORDER}${id}`);
@@ -39,36 +39,32 @@ const ListOrdersComponent = () => {
 
     return (
         <div>
-            {/*<div className="container">*/}
-            {/*    <div className="row">*/}
-            {/*        <button style={{marginTop: "10px"}}*/}
-            {/*                onClick={() => add()}*/}
-            {/*                className="btn btn-danger">Add*/}
-            {/*        </button>*/}
-            {/*        <div className="card-body">*/}
-            {/*            <div >*/}
-            {/*                {*/}
-            {/*                    orders.map(*/}
-            {/*                        order =>*/}
-            {/*                            <div  key={order.id}>*/}
-            {/*                                Condition: {order.condition}*/}
+            <div className="container">
+                <div className="row">
+                    <div className="card-body">
+                        <div >
+                            {
+                                orders.map(
+                                    order =>
+                                        <div  key={order.id}>
+                                            Condition: {order.condition}
 
-            {/*                                <div>*/}
-            {/*                                    <button onClick={() => edit(commodity.id)}*/}
-            {/*                                            className="btn btn-danger">Edit*/}
-            {/*                                    </button>*/}
-            {/*                                    <button style={{marginLeft: "10px"}}*/}
-            {/*                                            onClick={() => deleteOrder(commodity.id)}*/}
-            {/*                                            className="btn btn-danger">Delete*/}
-            {/*                                    </button>*/}
-            {/*                                </div>*/}
-            {/*                            </div>*/}
-            {/*                    )*/}
-            {/*                }*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+                                            <div>
+                                                <button onClick={() => edit(order.id)}
+                                                        className="btn btn-danger">Edit
+                                                </button>
+                                                <button style={{marginLeft: "10px"}}
+                                                        onClick={() => deleteOrder(order.id)}
+                                                        className="btn btn-danger">Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                )
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 

@@ -8,13 +8,13 @@ import {
   SIGN_UP_ROUTE,
   VET_HOME_ROUTE,
   USERS_ROUTE,
-  STATS_ROUTE, HOME_ROUTE, CART_ROUTE, COMMODITIES_ROUTE, ORDERS_ROUTE,
+  STATS_ROUTE, HOME_ROUTE, CART_ROUTE, COMMODITIES_ROUTE, ORDERS_ROUTE, USER_COMMODITIES_ROUTE,
 } from "./routeNames";
 
 export const userButtons = [
   {
     name: "Товары",
-    path: COMMODITIES_ROUTE,
+    path: USER_COMMODITIES_ROUTE,
   },
   {
     name: "Заказы",
@@ -49,9 +49,13 @@ export const unAuthButtons = [
 
 export const adminButtons = [
   {
+    name: "Товары",
+    path: COMMODITIES_ROUTE,
+  },
+  {
 
     name: "Пользователи",
     path: USERS_ROUTE,
   },
-  ...userButtons.filter((button) => button.name !== "Приёмы"), // Remove pet button from admin header and add all other buttons from user header
+  ...userButtons.filter((button) => button.name !== "Корзина" && button.name !== "Товары"), // Remove pet button from admin header and add all other buttons from user header
 ];
