@@ -11,6 +11,7 @@ import com.example.computerstorebackend.service.address.AddressService;
 import com.example.computerstorebackend.service.commodity.CommodityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,37 +48,35 @@ public class CommodityController {
     }
 
     @PostMapping("/commodity")
-    public Commodity createCommodity(@RequestBody Commodity commodity) {
-        return commodityService.save(commodity);
+    public ResponseEntity createCommodity(@RequestBody Commodity commodity) {
+        return ResponseEntity.ok(commodityService.save(commodity));
     }
 
 
     @PutMapping("/commodity/{id}")
-    public ResponseEntity<Commodity> editCommodity(@PathVariable Long id, @RequestBody Commodity commodity) {
+    public ResponseEntity editCommodity(@PathVariable Long id, @RequestBody Commodity commodity) {
         Optional<Commodity> c = commodityService.findById(id);
-        Commodity com = null;
-        if (c.isPresent()) {
-            com = c.get();
-          com.setName(commodity.getName());
-          com.setPrice(commodity.getPrice());
-          com.setQuantity(commodity.getQuantity());
-        }
+        Commodity com = c.orElseThrow(() -> new ResourceNotFoundException("Commodity not found with id :" + id));
+        com.setName(commodity.getName());
+        com.setPrice(commodity.getPrice());
+        com.setQuantity(commodity.getQuantity());
         return ResponseEntity.ok(commodityService.update(com));
     }
 
 
+
+
     @GetMapping("/commodity/{id}")
-    public ResponseEntity<CommodityDTO> getCommodityById(@PathVariable Long id) {
+    public ResponseEntity getCommodityById(@PathVariable Long id) {
         Optional<Commodity> commodity = commodityService.findById(id);
         return ResponseEntity.ok(commodityMapper.toDto(commodity.orElseThrow(() -> new ResourceNotFoundException("Commodity not found with id :" + id))));
     }
 
     @DeleteMapping("/commodity/{id}")
-    public ResponseEntity<Map<String, Boolean>> del(@PathVariable Long id) {
+    public ResponseEntity del(@PathVariable Long id) {
         Optional<Commodity> commodity = commodityService.findById(id);
-        commodity.ifPresent(value -> commodityService.delete(value));
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", true);
-        return ResponseEntity.ok(response);
+        Commodity c = commodity.orElseThrow(() -> new ResourceNotFoundException("Commodity not found with id :" + id));
+        commodityService.delete(c);
+        return new ResponseEntity<>("Successful operation", HttpStatus.OK);
     }
 }
