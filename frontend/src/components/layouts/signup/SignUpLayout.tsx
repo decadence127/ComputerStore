@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 interface SignUpLayoutProps {}
 
 const SignUpLayout: React.FC<SignUpLayoutProps> = () => {

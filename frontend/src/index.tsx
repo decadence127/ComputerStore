@@ -10,6 +10,8 @@ import App from "./components/App";
 import "./index.css";
 import { store } from "./redux/store";
 import { BrowserRouter } from "react-router-dom";
+import { SnackbarProvider } from "notistack";
+import { SnackbarUtilsConfigurator } from "./utils/helpers/snackBarUtils";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -17,9 +19,12 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <SnackbarProvider maxSnack={3}>
+        <SnackbarUtilsConfigurator />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </SnackbarProvider>
     </Provider>
   </React.StrictMode>
 );

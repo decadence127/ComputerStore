@@ -19,7 +19,7 @@ export interface RegistrationRequest
 }
 export interface UserCredentialData extends UserState {}
 
-export interface LoginRequest extends Pick<UserState, "email"> {
+export interface LoginRequest extends Pick<UserState, "username"> {
   password: string;
 }
 
