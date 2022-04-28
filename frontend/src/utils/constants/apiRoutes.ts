@@ -18,6 +18,7 @@ export const ADDRESSES_ROUTE = `${API_ROUTE}/address/`;
 export const ADDRESS_ROUTE = `${API_ROUTE}/address/:id`;
 
 //CART API
+export const CART_URL = `${API_ROUTE}/cart/`;
 export const GET_CART_ROUTE = `${API_ROUTE}/cart/user/:id`;
 export const CREATE_CART_ROUTE = `${API_ROUTE}/cart/`;
 export const EDIT_CART_ROUTE = `${API_ROUTE}/cart/:id`;

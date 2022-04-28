@@ -9,7 +9,7 @@ export interface AccountData {
 }
 
 export interface UserState {
-  id: string;
+  id: string | number;
   username: string;
   email: string;
   role: string;

@@ -12,13 +12,13 @@ import { UserCredentialData } from "./authService";
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: API_ROUTE,
-  credentials: "include",
-  mode: "cors",
   prepareHeaders: (headers, { getState }) => {
     const { token } = (getState() as RootState).userReducer.accountData;
 
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
+      headers.set("Content-Type", "application/json");
+      headers.set("Access-Control-Allow-Origin", "*");
     }
     return headers;
   },
