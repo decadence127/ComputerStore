@@ -23,12 +23,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -64,20 +62,34 @@ public class AccountController {
 
     @PostMapping("/signIn")
     public ResponseEntity signIn(@RequestBody Map<String, String> str) {
-        String username = str.get("username");
+        String email = str.get("email");
         String password = str.get("password");
-        Optional<Account> acc = accountService.findByUsernameAndPassword(username, password);
+        System.out.println("email from body " + email);
+        Optional<Account> acc = accountService.findByAccountData_Email(email);
+        System.out.println("Opshnl)) " + acc);
         if (acc.isPresent()) {
-            return ResponseEntity.ok(acc.orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username)));
+            if(Objects.equals(acc.get().getPassword(), password)) {
+                return ResponseEntity.ok(acc);
+            } else{
+                HashMap<String, String> errorEntity = new HashMap<>();
+                errorEntity.put("status", UNPROCESSABLE_ENTITY.toString());
+                errorEntity.put("msg", "Invalid password");
+
+                return new ResponseEntity<>(errorEntity, UNPROCESSABLE_ENTITY);
+            }
         } else {
-            return new ResponseEntity<>("Invalid username or password", FORBIDDEN);
+            HashMap<String, String> errorEntity = new HashMap<>();
+            errorEntity.put("status", UNPROCESSABLE_ENTITY.toString());
+            errorEntity.put("msg", "User with such email doesn't exist");
+
+            return new ResponseEntity<>(errorEntity, UNPROCESSABLE_ENTITY);
         }
     }
 
     @PostMapping("/signUp")
     public ResponseEntity signUp(@RequestBody Account account) {
-        Optional<Account> byUsername = accountService.findByUsername(account.getUsername());
-        if (byUsername.isEmpty()) {
+        Optional<Account> byEmail = accountService.findByAccountData_Email(account.getAccountData().getEmail());
+        if (byEmail.isEmpty()) {
 //            user.setPassword(passwordEncoder.encode(user.getPassword()));
             account.setRole(Role.USER);
             Account acc = accountService.save(account);
@@ -85,7 +97,10 @@ public class AccountController {
             cartService.save(cart);
             return ResponseEntity.ok(acc);
         } else {
-            return new ResponseEntity<>("The username already exists", HttpStatus.BAD_REQUEST);
+            HashMap<String, String> errorEntity = new HashMap<>();
+            errorEntity.put("status", UNPROCESSABLE_ENTITY.toString());
+            errorEntity.put("msg", "The email already exists");
+            return new ResponseEntity<>(errorEntity, HttpStatus.BAD_REQUEST);
         }
     }
 

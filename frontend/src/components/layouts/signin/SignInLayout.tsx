@@ -14,16 +14,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../../redux/services/authService";
 import styles from "./styles";
-import { HOME_ROUTE } from "../../../utils/constants/routeNames";
+import { HOME_ROUTE, SIGN_UP_ROUTE } from "../../../utils/constants/routeNames";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+
 interface SignInLayoutProps {}
 
 const SignInLayout: React.FC<SignInLayoutProps> = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
@@ -39,16 +40,14 @@ const SignInLayout: React.FC<SignInLayoutProps> = () => {
   const submitHandler = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const result = await login({ username, password });
-    console.log(result);
-
+    const result = await login({ email, password });
     if (result && !("error" in result)) {
       navigate(HOME_ROUTE);
     }
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container>
       <Box css={styles.wrapperContainer}>
         <Typography variant="h4" fontWeight="bold" component="h1" gutterBottom>
           SIGN IN
@@ -57,11 +56,11 @@ const SignInLayout: React.FC<SignInLayoutProps> = () => {
           <form onSubmit={submitHandler}>
             <FormControl sx={{ minWidth: "95%", margin: "0 20px" }}>
               <TextField
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 required
                 variant="outlined"
-                label="Username"
-                id="username"
+                label="Email"
+                id="email"
               />
             </FormControl>
             <FormControl sx={{ minWidth: "95%", margin: "0 20px" }}>
@@ -112,6 +111,27 @@ const SignInLayout: React.FC<SignInLayoutProps> = () => {
             </Box>
           </form>
         </Paper>
+        <Box
+          display="flex"
+          sx={{
+            minWidth: "600px",
+            padding: "40px 0",
+            textAlign: "center",
+          }}
+        >
+          <Typography color="GrayText">Need an account?</Typography>
+          <Link
+            style={{
+              margin: "0px 0px 20px 10px ",
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+            }}
+            to={SIGN_UP_ROUTE}
+          >
+            Sign Up!
+          </Link>
+        </Box>
       </Box>
     </Container>
   );
