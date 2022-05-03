@@ -1,5 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -14,11 +17,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+
 import { useLoginMutation } from "../../../redux/services/authService";
+import { REGISTER_ROUTE } from "../../../utils/constants/apiRoutes";
+import { HOME_ROUTE, SIGN_UP_ROUTE } from "../../../utils/constants/routeNames";
 import styles from "./styles";
-import { HOME_ROUTE } from "../../../utils/constants/routeNames";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+
 interface SignInLayoutProps {}
 
 const SignInLayout: React.FC<SignInLayoutProps> = () => {
@@ -48,7 +52,7 @@ const SignInLayout: React.FC<SignInLayoutProps> = () => {
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="md">
       <Box css={styles.wrapperContainer}>
         <Typography variant="h4" fontWeight="bold" component="h1" gutterBottom>
           SIGN IN
@@ -112,6 +116,10 @@ const SignInLayout: React.FC<SignInLayoutProps> = () => {
             </Box>
           </form>
         </Paper>
+        <Box minWidth="100%" css={styles.captionBox}>
+          <Typography>Doesn't have an account? </Typography>
+          <Link to={SIGN_UP_ROUTE}>Sign Up!</Link>
+        </Box>
       </Box>
     </Container>
   );

@@ -25,7 +25,7 @@ export const orderApi = createApi({
         }
       },
     }),
-    addOrder: builder.mutation<any, OrderData>({
+    addOrder: builder.mutation<any, Omit<OrderData, "id">>({
       query: (order) => ({
         url: ORDERS_ROUTE,
         method: "POST",

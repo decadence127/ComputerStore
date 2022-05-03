@@ -4,11 +4,10 @@ import {
   COMMODITIES_ROUTE,
   COMMODITY_ROUTE,
 } from "../../utils/constants/apiRoutes";
-import { setCommodity } from "../slices/commoditySlice";
-import { UserState } from "../slices/userSlice";
+import { CommodityState, setCommodity } from "../slices/commoditySlice";
 import { reauthBaseQuery } from "./interceptor";
 
-export interface CommodityData extends UserState {}
+export interface CommodityData extends CommodityState {}
 
 export const commodityApi = createApi({
   reducerPath: "commodityApi",
@@ -28,7 +27,7 @@ export const commodityApi = createApi({
         }
       },
     }),
-    addCommodity: builder.mutation<any, CommodityData>({
+    addCommodity: builder.mutation<any, Omit<CommodityData, "id">>({
       query: (commodity) => ({
         url: COMMODITIES_ROUTE,
         method: "POST",

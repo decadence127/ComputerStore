@@ -5,13 +5,13 @@ import { RootState } from "../store";
 export interface AccountData {
   token: string;
   phoneNumber: string;
+  email: string;
   contactInfo: string;
 }
 
 export interface UserState {
   id: string | number;
   username: string;
-  email: string;
   role: string;
   accountData: AccountData;
   isAuthenticated: boolean;
@@ -21,10 +21,10 @@ const initialState: UserState = {
   id: "",
   username: "",
   isAuthenticated: !!localStorage.getItem("accessToken"),
-  email: "",
   role: "",
   accountData: {
     token: localStorage.getItem("accessToken") || "",
+    email: "",
     phoneNumber: "",
     contactInfo: "",
   },
@@ -37,14 +37,14 @@ export const userSlice = createSlice({
     setCredentials: (
       state,
       {
-        payload: { id, username, email, role, accountData },
+        payload: { id, username, role, accountData },
       }: PayloadAction<UserCredentialData>
     ) => {
       state.id = id;
       state.username = username;
       state.isAuthenticated = true;
       state.role = role;
-      state.email = email;
+      state.accountData.email = accountData.email;
       state.accountData.token = accountData.token;
       state.accountData.phoneNumber = accountData.phoneNumber;
       state.accountData.contactInfo = accountData.contactInfo;

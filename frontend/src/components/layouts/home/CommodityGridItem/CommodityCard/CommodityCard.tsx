@@ -21,7 +21,7 @@ export default function CommodityCard({ commodity }: CommodityCardProps) {
   );
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 210, maxHeight: 350 }}>
       <CardMedia
         component="img"
         height="140"
@@ -29,11 +29,35 @@ export default function CommodityCard({ commodity }: CommodityCardProps) {
         alt="Cool item"
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          sx={{
+            maxWidth: 210,
+            maxHeight: 35,
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+          }}
+        >
           {commodity && commodity.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            maxWidth: 210,
+            maxHeight: 35,
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+          }}
+        >
           {commodity && commodity.description}
+        </Typography>
+        <Typography variant="caption" color="CaptionText">
+          {commodity && commodity.price + " BYN"}
         </Typography>
       </CardContent>
       <CardActions>

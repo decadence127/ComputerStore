@@ -1,4 +1,4 @@
-export const API_ROUTE = `${process.env.REACT_APP_API_ROUTE}/ComputerStore`;
+export const API_ROUTE = `${process.env.REACT_APP_API_ROUTE}ComputerStore`;
 
 //AUTH API
 export const REFRESH_ROUTE = `${API_ROUTE}/refresh`;

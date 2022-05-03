@@ -6,7 +6,9 @@ import {
   LinearProgress,
   Typography,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 import { useGetCommoditiesQuery } from "../../../redux/services/commodityService";
+import { RootState } from "../../../redux/store";
 import CommodityCard from "./CommodityGridItem/CommodityGridItem";
 import styles from "./styles";
 
@@ -14,6 +16,7 @@ interface HomeLayoutProps {}
 
 const HomeLayout: React.FC<HomeLayoutProps> = () => {
   const { data, isLoading } = useGetCommoditiesQuery();
+  const { role } = useSelector((state: RootState) => state.userReducer);
   return (
     <Box css={styles.wrapperStyle}>
       {isLoading && <LinearProgress />}
@@ -29,15 +32,26 @@ const HomeLayout: React.FC<HomeLayoutProps> = () => {
         sx={{
           mt: 5,
           display: "flex",
-          alignItems: "center",
+          flexDirection: "column",
           justifyContent: "center",
         }}
       >
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          component="h1"
+          gutterBottom
+          color="primary"
+          sx={{ paddingBottom: 3 }}
+        >
+          Recently added products
+        </Typography>
         <Grid sx={{ flexGrow: 1 }} container spacing={2}>
           {data &&
-            data.map((value) => {
-              return <CommodityCard />;
+            data.map((commodity) => {
+              return <CommodityCard key={commodity.id} commodity={commodity} />;
             })}
+          {role === "ADMIN" && <CommodityCard add />}
         </Grid>
       </Container>
     </Box>
