@@ -1,5 +1,5 @@
 import { Card, Grid } from "@mui/material";
-import { CommodityState } from "../../../../redux/slices/commoditySlice";
+import { CommodityState } from "../../../../../redux/slices/commoditySlice";
 import AddCommodityCard from "./AddCommodityCard/AddCommodityCard";
 import CommodityCard from "./CommodityCard/CommodityCard";
 

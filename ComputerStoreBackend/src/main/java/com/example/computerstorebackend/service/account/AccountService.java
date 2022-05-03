@@ -12,14 +12,13 @@ public interface AccountService extends GenericService<Account> {
     List<Account> findByRole(Role role);
 
     Optional<Account> findByUsername(String username);
-
+    Optional<Account> findByEmail(String email);
     Optional<Account> findByUsernameAndPassword(String username, String password);
 
     List<Account> findByAccountData_Firstname(String firstName);
 
     List<Account> findByAccountData_Lastname(String lastName);
 
-    Optional<Account> findByAccountData_Email(String email);
 
     Optional<Account> findByAccountData_Phone(String phone);
 }

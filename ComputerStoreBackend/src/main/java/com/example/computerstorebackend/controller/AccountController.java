@@ -65,7 +65,7 @@ public class AccountController {
         String email = str.get("email");
         String password = str.get("password");
         System.out.println("email from body " + email);
-        Optional<Account> acc = accountService.findByAccountData_Email(email);
+        Optional<Account> acc = accountService.findByEmail(email);
         System.out.println("Opshnl)) " + acc);
         if (acc.isPresent()) {
             if(Objects.equals(acc.get().getPassword(), password)) {
@@ -88,7 +88,8 @@ public class AccountController {
 
     @PostMapping("/signUp")
     public ResponseEntity signUp(@RequestBody Account account) {
-        Optional<Account> byEmail = accountService.findByAccountData_Email(account.getAccountData().getEmail());
+        System.out.println(account);
+        Optional<Account> byEmail = accountService.findByEmail(account.getEmail());
         if (byEmail.isEmpty()) {
 //            user.setPassword(passwordEncoder.encode(user.getPassword()));
             account.setRole(Role.USER);
@@ -114,7 +115,6 @@ public class AccountController {
             data.setFirstname(account.getAccountData().getFirstname());
             data.setLastname(account.getAccountData().getLastname());
             data.setPhone(account.getAccountData().getPhone());
-            data.setEmail(account.getAccountData().getEmail());
             acc.setAccountData(data);
             return ResponseEntity.ok(accountService.update(acc));
         } else {

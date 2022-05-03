@@ -8,8 +8,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 
-import { CommodityState } from "../../../../../redux/slices/commoditySlice";
-import { RootState } from "../../../../../redux/store";
+import { CommodityState } from "../../../../../../redux/slices/commoditySlice";
+import { RootState } from "../../../../../../redux/store";
 
 interface CommodityCardProps {
   commodity?: CommodityState;
@@ -21,7 +21,7 @@ export default function CommodityCard({ commodity }: CommodityCardProps) {
   );
 
   return (
-    <Card sx={{ maxWidth: 210, maxHeight: 350 }}>
+    <Card sx={{ maxWidth: 240, maxHeight: 350 }}>
       <CardMedia
         component="img"
         height="140"

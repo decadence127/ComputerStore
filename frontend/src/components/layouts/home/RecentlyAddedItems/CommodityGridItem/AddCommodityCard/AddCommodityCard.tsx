@@ -22,15 +22,22 @@ export default function AddCommodityCard() {
     <Card
       onClick={handleOpen}
       sx={{
-        width: "210px",
-        height: "350px",
+        width: "240px",
+        height: "300px",
         "&:hover": {
           backgroundColor: "#f5f5f5",
           cursor: "pointer",
         },
       }}
     >
-      <Box sx={{ padding: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+          padding: 3,
+        }}
+      >
         <Typography>Add new product</Typography>
       </Box>
       <CardActions>

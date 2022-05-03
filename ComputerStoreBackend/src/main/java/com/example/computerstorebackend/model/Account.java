@@ -38,6 +38,9 @@ public class Account {
     private Role role;
 
     @Column
+    private String email;
+
+    @Column
     @Embedded
     private AccountData accountData;
 

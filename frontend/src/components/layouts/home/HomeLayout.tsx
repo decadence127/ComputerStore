@@ -1,15 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import {
-  Box,
-  Container,
-  Grid,
-  LinearProgress,
-  Typography,
-} from "@mui/material";
+import { Box, Container, LinearProgress, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useGetCommoditiesQuery } from "../../../redux/services/commodityService";
 import { RootState } from "../../../redux/store";
-import CommodityCard from "./CommodityGridItem/CommodityGridItem";
+import ImportantLinksList from "./ImportantLinksList/ImportanitLinksList";
+import CommodityCard from "./RecentlyAddedItems/CommodityGridItem/CommodityGridItem";
+import RecentlyAddedItems from "./RecentlyAddedItems/RecentlyAddedItems";
 import styles from "./styles";
 
 interface HomeLayoutProps {}
@@ -28,31 +24,17 @@ const HomeLayout: React.FC<HomeLayoutProps> = () => {
         </Box>
       </Box>
       <Container
-        maxWidth="lg"
+        maxWidth="xl"
         sx={{
           mt: 5,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
+          mb: 12,
         }}
       >
-        <Typography
-          variant="h4"
-          fontWeight="bold"
-          component="h1"
-          gutterBottom
-          color="primary"
-          sx={{ paddingBottom: 3 }}
-        >
-          Recently added products
-        </Typography>
-        <Grid sx={{ flexGrow: 1 }} container spacing={2}>
-          {data &&
-            data.map((commodity) => {
-              return <CommodityCard key={commodity.id} commodity={commodity} />;
-            })}
-          {role === "ADMIN" && <CommodityCard add />}
-        </Grid>
+        {!isLoading && <RecentlyAddedItems data={data} />}
+        <ImportantLinksList />
       </Container>
     </Box>
   );

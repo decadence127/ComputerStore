@@ -44,12 +44,13 @@ public class AccountServiceImpl extends GenericServiceImpl<Account, AccountRepo>
     }
 
     @Override
-    public Optional<Account> findByAccountData_Email(String email) {
-        return repo.findByAccountData_Email(email);
+    public Optional<Account> findByEmail(String email) {
+        return repo.findByEmail(email);
     }
 
     @Override
     public Optional<Account> findByAccountData_Phone(String phone) {
         return repo.findByAccountData_Phone(phone);
     }
+
 }
