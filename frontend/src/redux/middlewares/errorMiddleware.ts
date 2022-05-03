@@ -16,7 +16,7 @@ export const rtkQueryErrorMiddleware: Middleware =
       } else if (rejectedValue.status === 403) {
         snackActions.error("You have no access to this page.");
       } else {
-        snackActions.error(rejectedValue.data.value || "Internal server error");
+        snackActions.error(rejectedValue.data.msg || "Internal server error");
       }
     }
     return next(action);

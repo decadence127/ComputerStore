@@ -3,10 +3,10 @@ import { UserCredentialData } from "../services/authService";
 import { RootState } from "../store";
 
 export interface AccountData {
+  phone: string;
+  firstname: string;
+  lastname: string;
   token: string;
-  phoneNumber: string;
-  email: string;
-  contactInfo: string;
 }
 
 export interface UserState {
@@ -14,19 +14,21 @@ export interface UserState {
   username: string;
   role: string;
   accountData: AccountData;
+  email: string;
   isAuthenticated: boolean;
 }
 
 const initialState: UserState = {
   id: "",
   username: "",
-  isAuthenticated: !!localStorage.getItem("accessToken"),
+  isAuthenticated: false,
+  email: "",
   role: "",
   accountData: {
-    token: localStorage.getItem("accessToken") || "",
-    email: "",
-    phoneNumber: "",
-    contactInfo: "",
+    phone: "",
+    firstname: "",
+    token: "",
+    lastname: "",
   },
 };
 
@@ -37,22 +39,20 @@ export const userSlice = createSlice({
     setCredentials: (
       state,
       {
-        payload: { id, username, role, accountData },
+        payload: { id, username, role, email, accountData },
       }: PayloadAction<UserCredentialData>
     ) => {
       state.id = id;
       state.username = username;
       state.isAuthenticated = true;
       state.role = role;
-      state.accountData.email = accountData.email;
-      state.accountData.token = accountData.token;
-      state.accountData.phoneNumber = accountData.phoneNumber;
-      state.accountData.contactInfo = accountData.contactInfo;
+      state.email = email;
+      state.accountData = accountData;
 
-      localStorage.setItem("accessToken", accountData.token);
+      // localStorage.setItem("accessToken", accountData.token);
     },
     clearCredentials: () => {
-      localStorage.removeItem("accessToken");
+      // localStorage.removeItem("accessToken");
       const cleanState = { ...initialState, isAuthenticated: false, token: "" };
       return cleanState;
     },

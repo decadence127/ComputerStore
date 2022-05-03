@@ -1,4 +1,7 @@
 /** @jsxImportSource @emotion/react */
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
@@ -11,28 +14,24 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  RegistrationRequest,
-  useRegistrationMutation,
-} from "../../../redux/services/authService";
-import { UserState } from "../../../redux/slices/userSlice";
-import { SIGN_IN_ROUTE } from "../../../utils/constants/routeNames";
-import { snackActions } from "../../../utils/helpers/snackBarUtils";
+
+import { useRegistrationMutation } from "../../../redux/services/authService";
+import { HOME_ROUTE } from "../../../utils/constants/routeNames";
 import styles from "./styles";
 
 interface SignUpLayoutProps {}
 
 const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
-  const [register, { isLoading }] = useRegistrationMutation();
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [userData, setUserData] = useState<RegistrationRequest>({
-    username: "",
-    password: "",
-    accountData: { email: "" },
-  });
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [firstname, setFirstName] = React.useState("");
+  const [lastname, setLastName] = React.useState("");
+
+  const [showPassword, setShowPassword] = React.useState<boolean>(false);
+
+  const [register, { isLoading }] = useRegistrationMutation();
+
   const handleMouseHoldPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
     setShowPassword(!showPassword);
   };
@@ -40,26 +39,21 @@ const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
   const returnHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     navigate(-1);
   };
-  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === "email") {
-      setUserData({ ...userData, accountData: { email: e.target.value } });
-    } else {
-      setUserData({
-        ...userData,
-        [e.target.name]: e.target.value,
-      });
-    }
-  };
   const submitHandler = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = await register(userData);
-    console.log(result);
-    snackActions.success("You have successfully registered. Proceed to login");
-    navigate(SIGN_IN_ROUTE);
+
+    const result = await register({
+      email,
+      password,
+      accountData: { firstname, lastname },
+    });
+    if (result && !("error" in result)) {
+      navigate(HOME_ROUTE);
+    }
   };
 
   return (
-    <Container maxWidth="md">
+    <Container>
       <Box css={styles.wrapperContainer}>
         <Typography variant="h4" fontWeight="bold" component="h1" gutterBottom>
           SIGN UP
@@ -68,30 +62,43 @@ const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
           <form onSubmit={submitHandler}>
             <FormControl sx={{ minWidth: "95%", margin: "0 20px" }}>
               <TextField
-                onChange={changeHandler}
+                onChange={(e) => setEmail(e.target.value)}
                 required
-                name="username"
                 variant="outlined"
-                label="Username"
-                id="username"
-              />
-            </FormControl>
-            <FormControl sx={{ minWidth: "95%", margin: "0 20px" }}>
-              <TextField
-                onChange={changeHandler}
-                required
-                name="email"
-                variant="outlined"
-                label="Email address"
+                label="Email"
                 id="email"
               />
             </FormControl>
+            <Box
+              sx={{
+                display: "flex",
+                minWidth: "95%",
+                margin: "0 20px",
+                flexWrap: "nowrap",
+              }}
+            >
+              <FormControl fullWidth sx={{ marginRight: "10px" }}>
+                <TextField
+                  onChange={(e) => setFirstName(e.target.value)}
+                  variant="outlined"
+                  label="First Name"
+                  id="firstname"
+                />
+              </FormControl>
+              <FormControl fullWidth sx={{ marginLeft: "10px" }}>
+                <TextField
+                  onChange={(e) => setLastName(e.target.value)}
+                  variant="outlined"
+                  label="Last Name"
+                  id="lastname"
+                />
+              </FormControl>
+            </Box>
             <FormControl sx={{ minWidth: "95%", margin: "0 20px" }}>
               <TextField
                 type={showPassword ? "text" : "password"}
-                onChange={changeHandler}
+                onChange={(e) => setPassword(e.target.value)}
                 required
-                name="password"
                 variant="outlined"
                 label="Password"
                 id="password"

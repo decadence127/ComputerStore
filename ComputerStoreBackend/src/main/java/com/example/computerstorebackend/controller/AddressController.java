@@ -13,6 +13,7 @@ import com.example.computerstorebackend.service.account.AccountService;
 import com.example.computerstorebackend.service.address.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -49,37 +50,38 @@ public class AddressController {
     }
 
     @PostMapping("/address")
-    public Address createAddress(@RequestBody Address address) {
-        return addressService.save(address);
+    public ResponseEntity createAddress(@RequestBody Address address) {
+        return ResponseEntity.ok(addressService.save(address));
     }
 
 
     @PutMapping("/address/{id}")
-    public ResponseEntity<Address> editAddress(@PathVariable Long id, @RequestBody Address address) {
+    public ResponseEntity editAddress(@PathVariable Long id, @RequestBody Address address) {
         Optional<Address> a = addressService.findById(id);
-        Address addr = null;
         if (a.isPresent()) {
-            addr = a.get();
+            Address addr = a.get();
             addr.setCity(address.getCity());
             addr.setStreet(address.getStreet());
             addr.setHouseNumber(address.getHouseNumber());
+            return ResponseEntity.ok(addressService.update(addr));
+        } else {
+            return new ResponseEntity<>("Invalid input", HttpStatus.BAD_REQUEST);
+
         }
-        return ResponseEntity.ok(addressService.update(addr));
     }
 
 
     @GetMapping("/address/{id}")
-    public ResponseEntity<AddressDTO> getUserById(@PathVariable Long id) {
+    public ResponseEntity getUserById(@PathVariable Long id) {
         Optional<Address> address = addressService.findById(id);
         return ResponseEntity.ok(addressMapper.toDto(address.orElseThrow(() -> new ResourceNotFoundException("Address not found with id :" + id))));
     }
 
     @DeleteMapping("/address/{id}")
-    public ResponseEntity<Map<String, Boolean>> del(@PathVariable Long id) {
+    public ResponseEntity del(@PathVariable Long id) {
         Optional<Address> address = addressService.findById(id);
-        address.ifPresent(value -> addressService.delete(value));
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", true);
-        return ResponseEntity.ok(response);
+        Address addr = address.orElseThrow(() -> new ResourceNotFoundException("Address not found with id :" + id));
+        addressService.delete(addr);
+        return new ResponseEntity<>("Successful operation", HttpStatus.OK);
     }
 }

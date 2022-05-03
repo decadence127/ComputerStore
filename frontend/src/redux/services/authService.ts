@@ -13,15 +13,16 @@ import {
 } from "../slices/userSlice";
 import { reauthBaseQuery } from "./interceptor";
 
-export interface RegistrationRequest extends Pick<UserState, "username"> {
+export interface RegistrationRequest extends Pick<UserState, "email"> {
   password: string;
   accountData: {
-    email: string;
+    firstname: string;
+    lastname: string;
   };
 }
 export interface UserCredentialData extends UserState {}
 
-export interface LoginRequest extends Pick<UserState, "username"> {
+export interface LoginRequest extends Pick<UserState, "email"> {
   password: string;
 }
 
