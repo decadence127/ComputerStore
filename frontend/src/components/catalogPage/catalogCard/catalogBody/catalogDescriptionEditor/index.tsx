@@ -5,19 +5,19 @@ import {
   useChangeCommodityMutation,
 } from "../../../../../redux/services/commodityService";
 
-interface TaskDescriptionEditorProps {
+interface ItemDescriptionEditorProps {
   itemData: CommodityData;
   deactivateEditDescriptionMode: () => void;
 }
 
-function TaskDescriptionEditor({
+function ItemDescriptionEditor({
   itemData,
   deactivateEditDescriptionMode,
-}: TaskDescriptionEditorProps) {
+}: ItemDescriptionEditorProps) {
   const [changeCommodity] = useChangeCommodityMutation();
   const [desc, setDesc] = useState(itemData.description);
 
-  const editTaskDescriptionHandler = async (
+  const editItemDescriptionHandler = async (
     event: React.FocusEvent<HTMLInputElement>
   ) => {
     if (desc !== itemData.description) {
@@ -41,7 +41,7 @@ function TaskDescriptionEditor({
             autoFocus
             value={desc}
             onChange={(e) => setDesc(e.target.value)}
-            onBlur={editTaskDescriptionHandler}
+            onBlur={editItemDescriptionHandler}
           />
         </FormControl>
       </Box>
@@ -49,4 +49,4 @@ function TaskDescriptionEditor({
   );
 }
 
-export default TaskDescriptionEditor;
+export default ItemDescriptionEditor;

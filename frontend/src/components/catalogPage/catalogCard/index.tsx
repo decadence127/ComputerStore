@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import ItemBody from "./catalogBody";
 
 import styles from "./styles";
-import TaskFooter from "./catalogFooter";
+import ItemFooter from "./catalogFooter";
 import ItemHeader from "./catalogHeader";
 import NoPhotographyIcon from "@mui/icons-material/NoPhotography";
 import { CommodityData } from "../../../redux/services/commodityService";
@@ -15,7 +15,7 @@ interface TaskPropsType {
 const defaultTruncatedLength = 150;
 
 function Item({ itemData }: TaskPropsType): ReactElement {
-  const { name, description, quantity, price } = itemData;
+  const { description } = itemData;
   const [isTruncated, setIsTruncated] = useState(false);
 
   const resultDescription = isTruncated
@@ -35,7 +35,7 @@ function Item({ itemData }: TaskPropsType): ReactElement {
           isTruncated={isTruncated}
           setIsTruncated={setIsTruncated}
         />
-        <TaskFooter isTruncated={isTruncated} setIsTruncated={setIsTruncated} />
+        <ItemFooter isTruncated={isTruncated} setIsTruncated={setIsTruncated} />
       </Box>
     </Box>
   );

@@ -27,7 +27,7 @@ function RemoveTaskModal({
     setActiveModal(false);
   };
 
-  const removeTaskHandler = async () => {
+  const removeItemHandler = async () => {
     const result = await deleteCommodity({ id }).unwrap();
     if (result) {
       setActiveModal(false);
@@ -52,7 +52,7 @@ function RemoveTaskModal({
           </Box>
           <Box css={styles.buttonsWrapperStyle}>
             <LoadingButton
-              onClick={removeTaskHandler}
+              onClick={removeItemHandler}
               loading={isLoading}
               css={styles.buttonStyle}
               type="submit"

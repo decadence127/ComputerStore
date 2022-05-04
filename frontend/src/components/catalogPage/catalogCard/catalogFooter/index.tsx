@@ -4,7 +4,7 @@ import { Box, Button } from "@mui/material";
 
 import styles from "./styles";
 
-interface TaskNamePropsType {
+interface ItemNamePropsType {
   isTruncated: boolean;
   setIsTruncated: (value: boolean) => void;
 }
@@ -12,7 +12,7 @@ interface TaskNamePropsType {
 function ItemFooter({
   isTruncated,
   setIsTruncated,
-}: TaskNamePropsType): ReactElement {
+}: ItemNamePropsType): ReactElement {
   return (
     <Box css={styles.taskFooterStyles}>
       <Box css={styles.descriptionButtonWrapperStyles}>

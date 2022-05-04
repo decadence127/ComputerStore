@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import Item from "./catalogCard";
-import AddTaskForm from "./addItemModal";
+import AddItemFrom from "./addItemModal";
 
 import styles from "./styles";
 import { RootState } from "../../redux/store";
@@ -49,7 +49,7 @@ function CatalogLayout(): ReactElement {
         )}
       </Box>
       <Box css={styles.tasksWrapperStyles}>
-        {taskFormMode && <AddTaskForm setItemFormMode={setItemFromMode} />}
+        {taskFormMode && <AddItemFrom setItemFormMode={setItemFromMode} />}
         {!isLoading &&
           data &&
           data.length > 0 &&
