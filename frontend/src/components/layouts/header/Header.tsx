@@ -4,7 +4,11 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
 
 import logo from "../../../assets/logo512.me.png";
-import { HOME_ROUTE, SIGN_IN_ROUTE } from "../../../utils/constants/routeNames";
+import {
+  CART_ROUTE,
+  HOME_ROUTE,
+  SIGN_IN_ROUTE,
+} from "../../../utils/constants/routeNames";
 import styles from "./styles";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
@@ -37,7 +41,7 @@ const Header: React.FC<HeaderProps> = () => {
           {isAuthenticated ? (
             <Button
               onClick={clickHandler}
-              value={SIGN_IN_ROUTE}
+              value={CART_ROUTE}
               sx={{ margin: "0 20px" }}
               variant="contained"
             >

@@ -88,7 +88,6 @@ public class AccountController {
 
     @PostMapping("/signUp")
     public ResponseEntity signUp(@RequestBody Account account) {
-        System.out.println(account);
         Optional<Account> byEmail = accountService.findByEmail(account.getEmail());
         if (byEmail.isEmpty()) {
 //            user.setPassword(passwordEncoder.encode(user.getPassword()));

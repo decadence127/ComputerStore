@@ -23,5 +23,4 @@ public class AccountDataDTO implements Serializable {
 
     private String phone;
 
-    private String email;
 }

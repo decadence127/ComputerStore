@@ -7,3 +7,4 @@ export const DEVICE_ROUTE = "catalog/device/:id";
 
 export const DELIVERY_ROUTE = "/delivery";
 export const CATALOG_ROUTE = "/catalog";
+export const CART_ROUTE = "/cart";

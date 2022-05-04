@@ -25,7 +25,7 @@ export const cartApi = createApi({
     }),
     getUserCart: builder.query<CartData, { userId: string }>({
       query: ({ userId }) => ({
-        url: `${CART_URL}user/${userId}`,
+        url: `${CART_URL}/user/${userId}`,
         method: "GET",
       }),
       providesTags: ["cart"],

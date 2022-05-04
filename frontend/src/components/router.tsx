@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import {
+  CART_ROUTE,
   CATALOG_ROUTE,
   DELIVERY_ROUTE,
   DEVICE_ROUTE,
@@ -13,6 +14,8 @@ import DeviceLayout from "./layouts/device/DeviceLayout";
 import HomeLayout from "./layouts/home/HomeLayout";
 import SignInLayout from "./layouts/signin/SignInLayout";
 import SignUpLayout from "./layouts/signup/SignUpLayout";
+import { PrivateRoute } from "./common/privateRoute/PrivateRoute";
+import CartLayout from "./layouts/cart/CartLayout";
 
 function Router() {
   return (
@@ -23,6 +26,7 @@ function Router() {
       <Route path={CATALOG_ROUTE} element={<CatalogLayout />} />
       <Route path={DEVICE_ROUTE} element={<DeviceLayout />} />
       <Route path={DELIVERY_ROUTE} element={<TakeoffsLayout />} />
+      <Route path={CART_ROUTE} element={<PrivateRoute to={<CartLayout />} />} />
 
       <Route path="*" element={<Navigate to={HOME_ROUTE} />} />
     </Routes>

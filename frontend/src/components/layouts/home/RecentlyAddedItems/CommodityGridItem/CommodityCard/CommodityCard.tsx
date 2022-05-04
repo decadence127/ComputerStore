@@ -11,7 +11,6 @@ import Typography from "@mui/material/Typography";
 import { CommodityState } from "../../../../../../redux/slices/commoditySlice";
 import { RootState } from "../../../../../../redux/store";
 import { useNavigate } from "react-router-dom";
-import { DEVICE_ROUTE } from "../../../../../../utils/constants/routeNames";
 
 interface CommodityCardProps {
   commodity?: CommodityState;
