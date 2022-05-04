@@ -14,6 +14,7 @@ import com.example.computerstorebackend.service.commodity.CommodityService;
 import com.example.computerstorebackend.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,10 +54,10 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public Order createOrder(@RequestBody Order order) {
+    public ResponseEntity createOrder(@RequestBody Order order) {
         Cart cart = cartService.findByAccount_Id(
                 order.getAccount().getId()).orElseThrow(
-                () -> new ResourceNotFoundException("Order not found with id :" +
+                () -> new ResourceNotFoundException("Cart not found with id :" +
                         order.getAccount().getId()));
         for (Commodity commodity : order.getCommodities()) {
             cart.getCommodities().remove(commodity);
@@ -66,35 +67,31 @@ public class OrderController {
         cartService.update(cart);
         order.setCondition(Condition.PROCESSING);
         order.setOrderDate(LocalDate.now());
-        return orderService.save(order);
+        return ResponseEntity.ok(orderService.save(order));
     }
 
 
     @PutMapping("/order/{id}")
-    public ResponseEntity<Order> editCommodity(@PathVariable Long id, @RequestBody Order order) {
+    public ResponseEntity editCommodity(@PathVariable Long id, @RequestBody Order order) {
         Optional<Order> o = orderService.findById(id);
-        Order ord = null;
-        if (o.isPresent()) {
-            ord = o.get();
-            ord.setCondition(order.getCondition());
-            ord.setDeliveryDate(LocalDate.now());
-        }
+        Order ord = o.orElseThrow(() -> new ResourceNotFoundException("Cart not found with id :" + id));
+        ord.setCondition(order.getCondition());
+        ord.setDeliveryDate(LocalDate.now());
         return ResponseEntity.ok(orderService.update(ord));
     }
 
 
     @GetMapping("/order/{id}")
-    public ResponseEntity<OrderDTO> getCommodityById(@PathVariable Long id) {
+    public ResponseEntity getCommodityById(@PathVariable Long id) {
         Optional<Order> order = orderService.findById(id);
         return ResponseEntity.ok(orderMapper.toDto(order.orElseThrow(() -> new ResourceNotFoundException("Order not found with id :" + id))));
     }
 
     @DeleteMapping("/order/{id}")
-    public ResponseEntity<Map<String, Boolean>> del(@PathVariable Long id) {
+    public ResponseEntity del(@PathVariable Long id) {
         Optional<Order> order = orderService.findById(id);
-        order.ifPresent(value -> orderService.delete(value));
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", true);
-        return ResponseEntity.ok(response);
+        Order o = order.orElseThrow(() -> new ResourceNotFoundException("Commodity not found with id :" + id));
+        orderService.delete(o);
+        return new ResponseEntity<>("Successful operation", HttpStatus.OK);
     }
 }

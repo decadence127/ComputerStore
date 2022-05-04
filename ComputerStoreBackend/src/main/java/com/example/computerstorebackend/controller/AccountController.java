@@ -11,6 +11,7 @@ import com.example.computerstorebackend.service.account.AccountService;
 import com.example.computerstorebackend.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,10 +23,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -60,73 +61,90 @@ public class AccountController {
 
 
     @PostMapping("/signIn")
-    public ResponseEntity<Account> signIn(@RequestBody Map<String, String> str) {
-        String username = str.get("username");
+    public ResponseEntity signIn(@RequestBody Map<String, String> str) {
+        String email = str.get("email");
         String password = str.get("password");
-        Optional<Account> acc = accountService.findByUsernameAndPassword(username, password);
+        System.out.println("email from body " + email);
+        Optional<Account> acc = accountService.findByEmail(email);
+        System.out.println("Opshnl)) " + acc);
         if (acc.isPresent()) {
-            return ResponseEntity.ok(acc.orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username)));
+            if(Objects.equals(acc.get().getPassword(), password)) {
+                return ResponseEntity.ok(acc);
+            } else{
+                HashMap<String, String> errorEntity = new HashMap<>();
+                errorEntity.put("status", UNPROCESSABLE_ENTITY.toString());
+                errorEntity.put("msg", "Invalid password");
+
+                return new ResponseEntity<>(errorEntity, UNPROCESSABLE_ENTITY);
+            }
+        } else {
+            HashMap<String, String> errorEntity = new HashMap<>();
+            errorEntity.put("status", UNPROCESSABLE_ENTITY.toString());
+            errorEntity.put("msg", "User with such email doesn't exist");
+
+            return new ResponseEntity<>(errorEntity, UNPROCESSABLE_ENTITY);
         }
-        return null;
     }
 
     @PostMapping("/signUp")
-    public ResponseEntity<Account> signUp(@RequestBody Account account) {
-        Optional<Account> byUsername = accountService.findByUsername(account.getUsername());
-        if (byUsername.isEmpty()) {
+    public ResponseEntity signUp(@RequestBody Account account) {
+        System.out.println(account);
+        Optional<Account> byEmail = accountService.findByEmail(account.getEmail());
+        if (byEmail.isEmpty()) {
 //            user.setPassword(passwordEncoder.encode(user.getPassword()));
             account.setRole(Role.USER);
             Account acc = accountService.save(account);
             Cart cart = Cart.builder().account(acc).build();
             cartService.save(cart);
             return ResponseEntity.ok(acc);
+        } else {
+            HashMap<String, String> errorEntity = new HashMap<>();
+            errorEntity.put("status", UNPROCESSABLE_ENTITY.toString());
+            errorEntity.put("msg", "The email already exists");
+            return new ResponseEntity<>(errorEntity, HttpStatus.BAD_REQUEST);
         }
-        return null;
     }
 
     @PutMapping("/account/{id}")
-    public ResponseEntity<Account> editUser(@PathVariable Long id, @RequestBody Account account) {
+    public ResponseEntity editUser(@PathVariable Long id, @RequestBody Account account) {
         Optional<Account> a = accountService.findById(id);
-        Account acc = null;
         if (a.isPresent()) {
-            acc = a.get();
+            Account acc = a.get();
             acc.setPassword(account.getPassword());
             AccountData data = acc.getAccountData();
             data.setFirstname(account.getAccountData().getFirstname());
             data.setLastname(account.getAccountData().getLastname());
             data.setPhone(account.getAccountData().getPhone());
-            data.setEmail(account.getAccountData().getEmail());
             acc.setAccountData(data);
+            return ResponseEntity.ok(accountService.update(acc));
+        } else {
+            return new ResponseEntity<>("Incorrect input", HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok(accountService.update(acc));
     }
 
     @PutMapping("/account/role/{id}")
-    public ResponseEntity<Account> editRoleUser(@PathVariable Long id, @RequestBody Map<String, String> str) {
+    public ResponseEntity editRoleUser(@PathVariable Long id, @RequestBody Map<String, String> str) {
         Role role = Role.valueOf(str.get("role"));
         Optional<Account> a = accountService.findById(id);
-        Account acc = null;
-        if (a.isPresent()) {
-            acc = a.get();
-            acc.setRole(role);
-        }
+        Account acc = a.orElseThrow(() -> new ResourceNotFoundException("Account not found with id :" + id));
+        acc.setRole(role);
         return ResponseEntity.ok(accountService.update(acc));
     }
 
 
     @GetMapping("/account/{id}")
-    public ResponseEntity<AccountDTO> getUserById(@PathVariable Long id) {
+    public ResponseEntity getUserById(@PathVariable Long id) {
         Optional<Account> account = accountService.findById(id);
-        return ResponseEntity.ok(accountMapper.toDto(account.orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + id))));
+        Account acc = account.orElseThrow(() -> new ResourceNotFoundException("Account not found with id :" + id));
+        return ResponseEntity.ok(accountMapper.toDto(acc));
     }
 
     @DeleteMapping("/account/{id}")
-    public ResponseEntity<Map<String, Boolean>> del(@PathVariable Long id) {
+    public ResponseEntity del(@PathVariable Long id) {
         Optional<Account> account = accountService.findById(id);
-        account.ifPresent(value -> accountService.delete(value));
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", true);
-        return ResponseEntity.ok(response);
+        Account acc = account.orElseThrow(() -> new ResourceNotFoundException("Account not found with id :" + id));
+        accountService.delete(acc);
+        return new ResponseEntity<>("Successful operation", HttpStatus.OK);
     }
 
 

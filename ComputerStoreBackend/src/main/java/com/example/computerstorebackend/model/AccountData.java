@@ -33,8 +33,6 @@ public class AccountData {
     @Column
     private String phone;
 
-    @Column
-    private String email;
 
 //    @JoinColumn(name = "account_id")
 //    @OneToMany(fetch = FetchType.LAZY)

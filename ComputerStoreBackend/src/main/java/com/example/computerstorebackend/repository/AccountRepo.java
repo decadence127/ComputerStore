@@ -20,7 +20,7 @@ public interface AccountRepo extends GenericRepository<Account> {
 
     List<Account> findByAccountData_Lastname(String lastName);
 
-    Optional<Account> findByAccountData_Email(String email);
+    Optional<Account> findByEmail(String email);
 
     Optional<Account> findByAccountData_Phone(String phone);
 
