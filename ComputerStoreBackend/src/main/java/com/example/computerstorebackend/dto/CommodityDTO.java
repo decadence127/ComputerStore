@@ -27,4 +27,6 @@ public class CommodityDTO implements Serializable {
     private int quantity;
 
     private String description;
+
+    private String imageUrl;
 }
