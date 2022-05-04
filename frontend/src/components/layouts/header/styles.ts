@@ -6,6 +6,7 @@ const appBarStyles = css({
   justifyContent: "center",
   backgroundColor: "rgb(34, 34, 34)!important",
   height: "4.25rem",
+  zIndex: "9999",
 });
 
 const imgBoxStyles = css({

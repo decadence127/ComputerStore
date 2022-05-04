@@ -2,13 +2,14 @@
 import { css } from "@emotion/react";
 
 const footerStyles = css({
+  position: "relative",
   display: "flex",
   padding: "0.5rem 0.75rem 0.5rem 0.75rem",
   marginTop: "auto",
   width: "calc(100vw-0.75rem)",
   height: "120px",
   boxShadow: "0 -4px 8px -2px rgba(115,115,115,0.75)",
-  zIndex: 5,
+  zIndex: "5000",
 });
 
 const flexColumn = css({
