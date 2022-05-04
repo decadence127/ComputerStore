@@ -13,7 +13,8 @@ import { UserCredentialData } from "./authService";
 export const baseQuery = fetchBaseQuery({
   baseUrl: API_ROUTE,
   prepareHeaders: (headers, { getState }) => {
-    const { token } = (getState() as RootState).userReducer.accountData;
+    const user = (getState() as RootState).userReducer;
+    const { token } = (getState() as RootState).userReducer;
 
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
@@ -31,15 +32,14 @@ export const reauthBaseQuery: BaseQueryFn<
 > = async (args, api, options) => {
   let result = await baseQuery(args, api, options);
 
-  if (result.error && result.error.status === 401) {
-    const refreshResult = await baseQuery(REFRESH_ROUTE, api, options);
+  const refreshResult = await baseQuery(REFRESH_ROUTE, api, options);
 
-    if (refreshResult.data) {
-      api.dispatch(setCredentials(refreshResult.data as UserCredentialData));
-      result = await baseQuery(args, api, options);
-    } else {
-      api.dispatch(clearCredentials());
-    }
+  if (refreshResult.data) {
+    api.dispatch(setCredentials(refreshResult.data as UserCredentialData));
+    result = await baseQuery(args, api, options);
+  } else {
+    api.dispatch(clearCredentials());
   }
+
   return result;
 };

@@ -29,5 +29,7 @@ public class AccountDTO implements Serializable {
 
     private String email;
 
+    private String token;
+
     private AccountDataDTO accountData;
 }

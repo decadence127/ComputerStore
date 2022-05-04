@@ -39,6 +39,10 @@ public class AccountServiceImpl extends GenericServiceImpl<Account, AccountRepo>
     }
 
     @Override
+    public Optional<Account> findByToken(String token){
+        return repo.findByToken(token);
+    }
+    @Override
     public List<Account> findByAccountData_Lastname(String lastName) {
         return repo.findByAccountData_Lastname(lastName);
     }
