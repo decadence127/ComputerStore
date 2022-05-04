@@ -13,22 +13,48 @@ import AddItemFrom from "./addItemModal";
 
 import styles from "./styles";
 import { RootState } from "../../redux/store";
-import { useGetCommoditiesQuery } from "../../redux/services/commodityService";
+import {
+  CommodityData,
+  useGetCommoditiesQuery,
+} from "../../redux/services/commodityService";
+import SearchBar from "./searchBar";
 
 function CatalogLayout(): ReactElement {
   const [taskFormMode, setItemFromMode] = useState(false);
+  const [filteredData, setFilteredData] = useState<CommodityData[]>([]);
+  const [filter, setFilter] = useState("");
+  const { data, isLoading } = useGetCommoditiesQuery();
+
+  useEffect(() => {
+    if (data) {
+      if (filter.length > 0) {
+        const filtered = data.filter((item) =>
+          item.name.toLowerCase().includes(filter.toLowerCase())
+        );
+        console.log(filtered);
+        setFilteredData(filtered);
+      } else {
+        setFilteredData(data);
+      }
+    }
+  }, [filter]);
+
+  useEffect(() => {
+    if (data) {
+      setFilteredData(data);
+    }
+  }, [data]);
 
   const { role } = useSelector((store: RootState) => store.userReducer);
-
-  const { data, isLoading } = useGetCommoditiesQuery();
 
   return (
     <Container maxWidth="lg" css={styles.containerStyles}>
       <Box css={styles.tasksHeaderStyles}>
-        <Box>
+        <Box display="flex" justifyContent="space-between" minWidth="1100px">
           <Typography variant="h2" fontSize="2rem" color="primary">
             Catalog
           </Typography>
+          <SearchBar setFilter={setFilter} />
         </Box>
         {role === "ADMIN" && (
           <Box>
@@ -53,7 +79,7 @@ function CatalogLayout(): ReactElement {
         {!isLoading &&
           data &&
           data.length > 0 &&
-          [...data].reverse().map((t) => {
+          [...filteredData].reverse().map((t) => {
             return <Item key={t.id} itemData={t} />;
           })}
         {isLoading === true && (
