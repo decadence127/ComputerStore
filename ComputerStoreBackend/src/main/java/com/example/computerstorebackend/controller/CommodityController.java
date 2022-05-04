@@ -28,6 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/ComputerStore")
@@ -44,6 +47,7 @@ public class CommodityController {
 
     @GetMapping("/commodity")
     public List<Commodity> getCommodities() {
+        System.out.println("called");
         return commodityService.findAll();
     }
 
@@ -59,6 +63,7 @@ public class CommodityController {
         Commodity com = c.orElseThrow(() -> new ResourceNotFoundException("Commodity not found with id :" + id));
         com.setName(commodity.getName());
         com.setPrice(commodity.getPrice());
+        com.setDescription(commodity.getDescription());
         com.setQuantity(commodity.getQuantity());
         return ResponseEntity.ok(commodityService.update(com));
     }
@@ -77,6 +82,9 @@ public class CommodityController {
         Optional<Commodity> commodity = commodityService.findById(id);
         Commodity c = commodity.orElseThrow(() -> new ResourceNotFoundException("Commodity not found with id :" + id));
         commodityService.delete(c);
-        return new ResponseEntity<>("Successful operation", HttpStatus.OK);
+        HashMap<String, String> response = new HashMap<>();
+        response.put("status", OK.toString());
+        response.put("msg", "Device has been deleted!");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

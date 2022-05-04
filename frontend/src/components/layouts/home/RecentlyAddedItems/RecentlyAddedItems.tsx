@@ -27,7 +27,6 @@ export default function RecentlyAddedItems({ data }: RecentlyAddedItemsProps) {
               <CommodityGridItem key={commodity.id} commodity={commodity} />
             );
           })}
-        {/* {role === "ADMIN" && <CommodityCard add />} */}
       </Grid>
     </>
   );

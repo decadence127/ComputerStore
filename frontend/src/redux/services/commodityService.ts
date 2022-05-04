@@ -35,16 +35,23 @@ export const commodityApi = createApi({
       }),
       invalidatesTags: ["commodity"],
     }),
-    getCommodity: builder.query<{ id: string }, CommodityData>({
+    getCommodity: builder.query<CommodityData, { id: string | number }>({
       query: ({ id }) => ({
-        url: `${COMMODITY_ROUTE}/${id}`,
+        url: `${COMMODITY_ROUTE}${id}`,
         method: "GET",
       }),
       providesTags: ["commodity"],
     }),
+    deleteCommodity: builder.mutation<any, { id: number | string }>({
+      query: ({ id }) => ({
+        url: `${COMMODITY_ROUTE}${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["commodity"],
+    }),
     changeCommodity: builder.mutation<any, Partial<CommodityData>>({
       query: (body) => ({
-        url: `${COMMODITY_ROUTE}/${body.id}`,
+        url: `${COMMODITY_ROUTE}${body.id}`,
         method: "PUT",
         body: body,
       }),
@@ -58,4 +65,5 @@ export const {
   useChangeCommodityMutation,
   useGetCommoditiesQuery,
   useGetCommodityQuery,
+  useDeleteCommodityMutation,
 } = commodityApi;
