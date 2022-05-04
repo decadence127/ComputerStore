@@ -8,7 +8,7 @@ import {
   SIGN_UP_ROUTE,
 } from "../utils/constants/routeNames";
 import CatalogLayout from "./layouts/catalogPage";
-import TakeoffsLayout from "./layouts/catalogPage/takeOff/TakeoffLayout";
+import TakeoffsLayout from "./layouts/takeOff/TakeoffLayout";
 import DeviceLayout from "./layouts/device/DeviceLayout";
 import HomeLayout from "./layouts/home/HomeLayout";
 import SignInLayout from "./layouts/signin/SignInLayout";

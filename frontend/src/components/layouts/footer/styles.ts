@@ -61,7 +61,7 @@ const contactUsButtonContainerStyles = css({
 const contactsInfoWrapperStyles = css({
   display: "flex",
   alignItems: "center",
-  justifyContent: "center",
+  justifyContent: "flex-end",
   height: "100%",
 });
 const socialIconsWrapperStyles = css({

@@ -20,7 +20,11 @@ export default function RecentlyAddedItems({ data }: RecentlyAddedItemsProps) {
       >
         5 Recently added products
       </Typography>
-      <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+      <Grid
+        sx={{ flexGrow: 1, justifyContent: "center" }}
+        container
+        spacing={2}
+      >
         {data &&
           data.slice(Math.max(data.length - 5, 0)).map((commodity) => {
             return (

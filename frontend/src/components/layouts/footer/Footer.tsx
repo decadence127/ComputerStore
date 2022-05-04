@@ -45,26 +45,35 @@ const Footer: React.FC<FooterProps> = () => {
     <Box bgcolor="rgb(34, 34, 34)" css={styles.footerStyles} component="footer">
       <CopyrightLogo />
 
-      <Container maxWidth="sm">
+      <Container maxWidth="md">
         <Box css={styles.contactsInfoWrapperStyles}>
-          <Box ml={10}>
-            <Typography color="white">Social Media</Typography>
-          </Box>
           <Box css={styles.socialIconsWrapperStyles}>
             <Box display="flex" justifyContent="space-around">
               <Box mr={3} ml={3}>
                 <IconButton target="_blank" href="_">
-                  <LinkedIn css={styles.iconStyles} color="action" />
+                  <LinkedIn
+                    fontSize="large"
+                    css={styles.iconStyles}
+                    color="primary"
+                  />
                 </IconButton>
               </Box>
               <Box mr={3} ml={3}>
                 <IconButton target="_blank" href="_">
-                  <Facebook css={styles.iconStyles} color="action" />
+                  <Facebook
+                    fontSize="large"
+                    css={styles.iconStyles}
+                    color="primary"
+                  />
                 </IconButton>
               </Box>
               <Box mr={3} ml={3}>
                 <IconButton target="_blank" href="_">
-                  <Twitter css={styles.iconStyles} color="action" />
+                  <Twitter
+                    css={styles.iconStyles}
+                    fontSize="large"
+                    color="primary"
+                  />
                 </IconButton>
               </Box>
             </Box>

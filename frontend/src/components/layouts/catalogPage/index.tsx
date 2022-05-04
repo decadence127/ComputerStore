@@ -6,6 +6,11 @@ import {
   Typography,
   Container,
   Button,
+  Select,
+  MenuItem,
+  FormControl,
+  SelectChangeEvent,
+  InputLabel,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import Item from "./catalogCard";
@@ -19,11 +24,47 @@ import {
 } from "../../../redux/services/commodityService";
 import SearchBar from "./searchBar";
 
+const options = [
+  {
+    name: "None",
+    value: "None",
+  },
+  {
+    name: "Lowest price",
+    value: "ASC",
+  },
+  {
+    name: "Highest price",
+    value: "DESC",
+  },
+];
+
 function CatalogLayout(): ReactElement {
   const [taskFormMode, setItemFromMode] = useState(false);
   const [filteredData, setFilteredData] = useState<CommodityData[]>([]);
   const [filter, setFilter] = useState("");
   const { data, isLoading } = useGetCommoditiesQuery();
+  const [sortSelect, setSortSelect] = useState("None");
+
+  const handleChangeSelect = (e: SelectChangeEvent<string>) => {
+    setSortSelect(e.target.value as any);
+  };
+
+  useEffect(() => {
+    if (filteredData && sortSelect !== "None") {
+      const sortedData = [...filteredData].sort((a, b) =>
+        sortSelect === "Lowest price" ? a.price - b.price : b.price - a.price
+      );
+
+      console.log(sortedData);
+
+      setFilteredData(sortedData);
+    }
+    if (data && sortSelect === "None") {
+      setFilteredData(data);
+      setFilter("");
+    }
+  }, [sortSelect]);
 
   useEffect(() => {
     if (data) {
@@ -40,8 +81,9 @@ function CatalogLayout(): ReactElement {
   }, [filter]);
 
   useEffect(() => {
-    if (data) {
-      setFilteredData(data);
+    if (data && filteredData.length === 0) {
+      const reverseData = [...data].reverse();
+      setFilteredData(reverseData);
     }
   }, [data]);
 
@@ -54,32 +96,51 @@ function CatalogLayout(): ReactElement {
           <Typography variant="h2" fontSize="2rem" color="primary">
             Catalog
           </Typography>
-          <SearchBar setFilter={setFilter} />
-        </Box>
-        {role === "ADMIN" && (
-          <Box>
-            <Button
-              onClick={() => {
-                setItemFromMode(true);
-              }}
-              css={styles.createTaskButtonStyles}
-              type="button"
-              variant="contained"
-              color="primary"
-              value="Create new task"
-              disabled={taskFormMode}
-            >
-              Add new item
-            </Button>
+          <Box display="flex" sx={{ minHeight: "70px" }}>
+            <FormControl fullWidth>
+              <InputLabel id="select">Sort</InputLabel>
+              <Select
+                labelId="select"
+                onChange={handleChangeSelect}
+                label="Sort"
+                value={sortSelect}
+              >
+                {options.map((item) => (
+                  <MenuItem key={item.value} value={item.name}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Box sx={{ margin: "0 20px" }}>
+              <SearchBar setFilter={setFilter} />
+            </Box>
+            {role === "ADMIN" && (
+              <Box>
+                <Button
+                  onClick={() => {
+                    setItemFromMode(true);
+                  }}
+                  css={styles.createTaskButtonStyles}
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  value="Create new task"
+                  disabled={taskFormMode}
+                >
+                  Add new item
+                </Button>
+              </Box>
+            )}
           </Box>
-        )}
+        </Box>
       </Box>
       <Box css={styles.tasksWrapperStyles}>
         {taskFormMode && <AddItemFrom setItemFormMode={setItemFromMode} />}
         {!isLoading &&
           data &&
           data.length > 0 &&
-          [...filteredData].reverse().map((t) => {
+          filteredData.map((t) => {
             return <Item key={t.id} itemData={t} />;
           })}
         {isLoading === true && (

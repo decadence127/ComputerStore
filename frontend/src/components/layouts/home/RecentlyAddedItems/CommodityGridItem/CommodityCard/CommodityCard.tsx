@@ -21,7 +21,7 @@ export default function CommodityCard({ commodity }: CommodityCardProps) {
   );
 
   return (
-    <Card sx={{ maxWidth: 240, maxHeight: 350 }}>
+    <Card elevation={3} sx={{ maxWidth: 240, maxHeight: 350 }}>
       <CardMedia
         component="img"
         height="140"

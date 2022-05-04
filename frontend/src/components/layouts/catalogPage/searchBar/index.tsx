@@ -18,6 +18,7 @@ const Search = styled("div")(({ theme }) => ({
 }));
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
+  height: "55px",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
