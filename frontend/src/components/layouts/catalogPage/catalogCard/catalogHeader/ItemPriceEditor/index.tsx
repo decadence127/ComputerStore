@@ -6,43 +6,44 @@ import styles from "../styles";
 import {
   CommodityData,
   useChangeCommodityMutation,
-} from "../../../../../redux/services/commodityService";
+} from "../../../../../../redux/services/commodityService";
 
-interface ItemNameEditorProps {
+interface ItemPriceEditorProps {
   itemData: CommodityData;
-  setEditNameMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditPriceMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function ItemNameEditor({ itemData, setEditNameMode }: ItemNameEditorProps) {
-  const [name, setName] = useState(itemData.name);
+function ItemPriceEditor({ itemData, setEditPriceMode }: ItemPriceEditorProps) {
+  const [price, setPrice] = useState<number>(itemData.price);
   const [editCommodity] = useChangeCommodityMutation();
 
-  const editItemNameHandler = async (
+  const editItemPriceHandler = async (
     event: React.FocusEvent<HTMLInputElement>
   ): Promise<void> => {
     event?.preventDefault();
-    if (name !== itemData.name) {
+    if (price !== itemData.price) {
       // Prevent unnecessary mutation if name is not changed (i.e. if user closes edit mode without changing anything)
-      const result = await editCommodity({ ...itemData, name }).unwrap();
+      const result = await editCommodity({ ...itemData, price }).unwrap();
       console.log(result);
     }
-    setEditNameMode(false);
+    setEditPriceMode(false);
   };
 
   return (
     <Box css={styles.inputTitleWrapperStyles}>
       <form>
         <TextField
-          name="name"
+          name="price"
           autoFocus
-          placeholder="Name"
+          placeholder="Price"
           variant="outlined"
-          onChange={(e) => setName(e.target.value)}
-          onBlur={editItemNameHandler}
+          type="number"
+          onChange={(e) => setPrice(e.target.value as unknown as number)}
+          onBlur={editItemPriceHandler}
           css={styles.inputTitleStyles}
         />
       </form>
     </Box>
   );
 }
-export default ItemNameEditor;
+export default ItemPriceEditor;

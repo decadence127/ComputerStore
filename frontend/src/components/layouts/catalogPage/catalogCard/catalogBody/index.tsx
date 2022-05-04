@@ -7,8 +7,8 @@ import ItemDescription from "./catalogDescription";
 import ItemDescriptionEditor from "./catalogDescriptionEditor";
 
 import styles from "./styles";
-import { RootState } from "../../../../redux/store";
-import { CommodityData } from "../../../../redux/services/commodityService";
+import { RootState } from "../../../../../redux/store";
+import { CommodityData } from "../../../../../redux/services/commodityService";
 
 interface ItemDescriptionProps {
   description: string;

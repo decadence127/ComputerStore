@@ -6,44 +6,43 @@ import styles from "../styles";
 import {
   CommodityData,
   useChangeCommodityMutation,
-} from "../../../../../redux/services/commodityService";
+} from "../../../../../../redux/services/commodityService";
 
-interface ItemPriceEditorProps {
+interface ItemNameEditorProps {
   itemData: CommodityData;
-  setEditPriceMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditNameMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function ItemPriceEditor({ itemData, setEditPriceMode }: ItemPriceEditorProps) {
-  const [price, setPrice] = useState<number>(itemData.price);
+function ItemNameEditor({ itemData, setEditNameMode }: ItemNameEditorProps) {
+  const [name, setName] = useState(itemData.name);
   const [editCommodity] = useChangeCommodityMutation();
 
-  const editItemPriceHandler = async (
+  const editItemNameHandler = async (
     event: React.FocusEvent<HTMLInputElement>
   ): Promise<void> => {
     event?.preventDefault();
-    if (price !== itemData.price) {
+    if (name !== itemData.name) {
       // Prevent unnecessary mutation if name is not changed (i.e. if user closes edit mode without changing anything)
-      const result = await editCommodity({ ...itemData, price }).unwrap();
+      const result = await editCommodity({ ...itemData, name }).unwrap();
       console.log(result);
     }
-    setEditPriceMode(false);
+    setEditNameMode(false);
   };
 
   return (
     <Box css={styles.inputTitleWrapperStyles}>
       <form>
         <TextField
-          name="price"
+          name="name"
           autoFocus
-          placeholder="Price"
+          placeholder="Name"
           variant="outlined"
-          type="number"
-          onChange={(e) => setPrice(e.target.value as unknown as number)}
-          onBlur={editItemPriceHandler}
+          onChange={(e) => setName(e.target.value)}
+          onBlur={editItemNameHandler}
           css={styles.inputTitleStyles}
         />
       </form>
     </Box>
   );
 }
-export default ItemPriceEditor;
+export default ItemNameEditor;

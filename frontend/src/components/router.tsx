@@ -5,7 +5,8 @@ import {
   SIGN_IN_ROUTE,
   SIGN_UP_ROUTE,
 } from "../utils/constants/routeNames";
-import CatalogLayout from "./catalogPage";
+import CatalogLayout from "./layouts/catalogPage";
+import DeviceLayout from "./layouts/device/DeviceLayout";
 import HomeLayout from "./layouts/home/HomeLayout";
 import SignInLayout from "./layouts/signin/SignInLayout";
 import SignUpLayout from "./layouts/signup/SignUpLayout";
@@ -17,6 +18,7 @@ function Router() {
       <Route path={SIGN_IN_ROUTE} element={<SignInLayout />} />
       <Route path={SIGN_UP_ROUTE} element={<SignUpLayout />} />
       <Route path={CATALOG_ROUTE} element={<CatalogLayout />} />
+      <Route path="catalog/device/:id" element={<DeviceLayout />} />
 
       <Route path="*" element={<Navigate to={HOME_ROUTE} />} />
     </Routes>

@@ -4,7 +4,7 @@ import { Box, Modal, Fade, Backdrop, Button } from "@mui/material";
 import { LoadingButton } from "@mui/lab/";
 
 import styles from "./styles";
-import { useDeleteCommodityMutation } from "../../../../../redux/services/commodityService";
+import { useDeleteCommodityMutation } from "../../../../../../redux/services/commodityService";
 
 interface SuccessModalProps {
   id: number | string;

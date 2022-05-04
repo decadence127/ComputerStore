@@ -7,7 +7,7 @@ import { Box, Button, FormControl, TextField } from "@mui/material";
 import {
   CommodityData,
   useAddCommodityMutation,
-} from "../../../redux/services/commodityService";
+} from "../../../../redux/services/commodityService";
 import styles from "./styles";
 
 interface ItemPropsType {

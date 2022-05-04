@@ -7,7 +7,7 @@ import styles from "./styles";
 import ItemFooter from "./catalogFooter";
 import ItemHeader from "./catalogHeader";
 import NoPhotographyIcon from "@mui/icons-material/NoPhotography";
-import { CommodityData } from "../../../redux/services/commodityService";
+import { CommodityData } from "../../../../redux/services/commodityService";
 
 interface TaskPropsType {
   itemData: CommodityData;
@@ -16,7 +16,7 @@ const defaultTruncatedLength = 150;
 
 function Item({ itemData }: TaskPropsType): ReactElement {
   const { description } = itemData;
-  const [isTruncated, setIsTruncated] = useState(false);
+  const [isTruncated, setIsTruncated] = useState(true);
 
   const resultDescription = isTruncated
     ? description.slice(0, defaultTruncatedLength)

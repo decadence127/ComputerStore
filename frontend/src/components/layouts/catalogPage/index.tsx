@@ -12,11 +12,11 @@ import Item from "./catalogCard";
 import AddItemFrom from "./addItemModal";
 
 import styles from "./styles";
-import { RootState } from "../../redux/store";
+import { RootState } from "../../../redux/store";
 import {
   CommodityData,
   useGetCommoditiesQuery,
-} from "../../redux/services/commodityService";
+} from "../../../redux/services/commodityService";
 import SearchBar from "./searchBar";
 
 function CatalogLayout(): ReactElement {

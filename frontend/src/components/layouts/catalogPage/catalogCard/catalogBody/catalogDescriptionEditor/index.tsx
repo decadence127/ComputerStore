@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
   CommodityData,
   useChangeCommodityMutation,
-} from "../../../../../redux/services/commodityService";
+} from "../../../../../../redux/services/commodityService";
 
 interface ItemDescriptionEditorProps {
   itemData: CommodityData;
