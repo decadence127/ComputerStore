@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import {
-  AppBar,
   Box,
   Container,
   LinearProgress,
@@ -10,16 +9,19 @@ import {
 import { useSelector } from "react-redux";
 import { useGetCommoditiesQuery } from "../../../redux/services/commodityService";
 import { RootState } from "../../../redux/store";
-import ImportantLinksList from "./ImportantLinksList/ImportanitLinksList";
-import CommodityCard from "./RecentlyAddedItems/CommodityGridItem/CommodityGridItem";
+import ImportantLinksList from "./ImportantLinksList/ImportantLinksList";
 import RecentlyAddedItems from "./RecentlyAddedItems/RecentlyAddedItems";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import QuizIcon from "@mui/icons-material/Quiz";
 import TerminalIcon from "@mui/icons-material/Terminal";
 import GamesIcon from "@mui/icons-material/Games";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import styles from "./styles";
 import { useNavigate } from "react-router-dom";
-import { CATALOG_ROUTE } from "../../../utils/constants/routeNames";
+import {
+  CATALOG_ROUTE,
+  DELIVERY_ROUTE,
+} from "../../../utils/constants/routeNames";
 
 interface HomeLayoutProps {}
 
@@ -117,6 +119,24 @@ const HomeLayout: React.FC<HomeLayoutProps> = () => {
           >
             <QuizIcon />
             <Typography>FAQ</Typography>
+          </Box>
+          <Box
+            onClick={() => navigate(DELIVERY_ROUTE)}
+            sx={{
+              display: "flex",
+              height: 'calc(100 % -"80px")',
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 2,
+              "&:hover": {
+                backgroundColor: "#dddada",
+                cursor: "pointer",
+              },
+            }}
+          >
+            <LocalShippingIcon />
+            <Typography>Takeoffs</Typography>
           </Box>
         </Toolbar>
       </Box>
