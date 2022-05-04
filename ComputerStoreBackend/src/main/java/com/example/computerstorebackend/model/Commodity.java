@@ -33,6 +33,6 @@ public class Commodity {
     @Column
     private int quantity;
 
-    @Column
+    @Column(length = 1024)
     private String description;
 }

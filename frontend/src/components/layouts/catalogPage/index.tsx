@@ -81,7 +81,7 @@ function CatalogLayout(): ReactElement {
   }, [filter]);
 
   useEffect(() => {
-    if (data && filteredData.length === 0) {
+    if (data) {
       const reverseData = [...data].reverse();
       setFilteredData(reverseData);
     }

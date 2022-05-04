@@ -32,14 +32,15 @@ export const reauthBaseQuery: BaseQueryFn<
 > = async (args, api, options) => {
   let result = await baseQuery(args, api, options);
 
-  const refreshResult = await baseQuery(REFRESH_ROUTE, api, options);
+  if (result.error && result.error.status === 401) {
+    const refreshResult = await baseQuery(REFRESH_ROUTE, api, options);
 
-  if (refreshResult.data) {
-    api.dispatch(setCredentials(refreshResult.data as UserCredentialData));
-    result = await baseQuery(args, api, options);
-  } else {
-    api.dispatch(clearCredentials());
+    if (refreshResult.data) {
+      api.dispatch(setCredentials(refreshResult.data as UserCredentialData));
+      result = await baseQuery(args, api, options);
+    } else {
+      api.dispatch(clearCredentials());
+    }
   }
-
   return result;
 };
