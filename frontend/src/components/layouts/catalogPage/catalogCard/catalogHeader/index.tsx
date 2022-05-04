@@ -36,13 +36,9 @@ function ItemHeader({ itemData }: ItemNamePropsType): ReactElement {
   const handleClose = () => {
     setActiveModal(false);
   };
-  const handleOpenDevicePage = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    navigate("/catalog/device/" + itemData.id);
-  };
 
   return (
-    <Box onClick={handleOpenDevicePage}>
+    <Box>
       {role === "ADMIN" && editNameMode ? (
         <ItemNameEditor itemData={itemData} setEditNameMode={setEditNameMode} />
       ) : role === "ADMIN" && editPriceMode ? (
