@@ -12,8 +12,8 @@ export interface OrderState {
     houseNumber: string;
   };
   account: UserState;
-  orderDate: Date | string;
-  deliveryDate: Date | string;
+  orderDate: string;
+  deliveryDate: string;
   payment: "CASH" | "CARD";
   delivery: "TAKEOFF" | "DELIVERY";
   commodities: CommodityState[];
@@ -31,8 +31,8 @@ const initialState: OrderState = {
   },
   account: {} as UserState,
   payment: "CASH",
-  orderDate: new Date(),
-  deliveryDate: new Date(),
+  orderDate: new Date().toDateString(),
+  deliveryDate: new Date().toDateString(),
   commodities: [],
 };
 
