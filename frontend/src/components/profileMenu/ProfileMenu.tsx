@@ -2,10 +2,12 @@ import { Badge, IconButton, Menu, MenuItem } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import React from "react";
 import {
+  ALL_ORDERS_ROUTE,
   CART_ROUTE,
   LOGOUT_ROUTE,
   ORDERS_ROUTE,
   PROFILE_ROUTE,
+  STATISTICS_ROUTE,
 } from "../../utils/constants/routeNames";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +18,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useGetUserCartQuery } from "../../redux/services/cartService";
 import { RootState } from "../../redux/store";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
 
 interface ProfileMenuProps {
   anchorEl: HTMLElement | null;
@@ -30,7 +33,7 @@ export default function ProfileMenu({
 }: ProfileMenuProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { id } = useSelector((store: RootState) => store.userReducer);
+  const { id, role } = useSelector((store: RootState) => store.userReducer);
   const { data } = useGetUserCartQuery({ userId: String(id) });
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -84,9 +87,21 @@ export default function ProfileMenu({
           Cart
         </MenuItem>
         <MenuItem data-path={ORDERS_ROUTE} onClick={handleClick}>
-          <PersonIcon />
+          <ShoppingBasketIcon />
           Orders
         </MenuItem>
+        {role === "ADMIN" && (
+          <>
+            <MenuItem data-path={ALL_ORDERS_ROUTE} onClick={handleClick}>
+              <ShoppingBasketIcon />
+              User's orders
+            </MenuItem>
+            <MenuItem data-path={STATISTICS_ROUTE} onClick={handleClick}>
+              <StackedLineChartIcon />
+              Statistics
+            </MenuItem>
+          </>
+        )}
 
         <MenuItem
           data-path={LOGOUT_ROUTE.path}

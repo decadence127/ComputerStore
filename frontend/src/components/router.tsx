@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import {
+  ALL_ORDERS_ROUTE,
   CART_ROUTE,
   CATALOG_ROUTE,
   DELIVERY_ROUTE,
@@ -18,6 +19,7 @@ import SignUpLayout from "./layouts/signup/SignUpLayout";
 import { PrivateRoute } from "./common/privateRoute/PrivateRoute";
 import CartLayout from "./layouts/cart/CartLayout";
 import OrderLayout from "./layouts/order/OrderLayout/OrderLayout";
+import AllOrdersLayout from "./layouts/order/AllOrdersLayout/AllOrdersLayout";
 
 function Router() {
   return (
@@ -32,6 +34,10 @@ function Router() {
       <Route
         path={ORDERS_ROUTE}
         element={<PrivateRoute to={<OrderLayout />} />}
+      />
+      <Route
+        path={ALL_ORDERS_ROUTE}
+        element={<PrivateRoute requiredRole="ADMIN" to={<AllOrdersLayout />} />}
       />
 
       <Route path="*" element={<Navigate to={HOME_ROUTE} />} />

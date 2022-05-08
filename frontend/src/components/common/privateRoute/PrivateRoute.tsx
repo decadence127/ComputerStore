@@ -22,6 +22,7 @@ export function PrivateRoute({
   if (!isAuthenticated) {
     return <Navigate to={SIGN_IN_ROUTE} state={{ from: location }} replace />;
   }
+
   if (role && requiredRole) {
     if (isAuthenticated && role !== requiredRole) {
       return <Navigate to={HOME_ROUTE} state={{ from: location }} replace />;

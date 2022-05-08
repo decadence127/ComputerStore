@@ -9,5 +9,7 @@ export const DELIVERY_ROUTE = "/delivery";
 export const CATALOG_ROUTE = "/catalog";
 export const CART_ROUTE = "/cart";
 export const ORDERS_ROUTE = "/orders";
+export const ALL_ORDERS_ROUTE = "/allOrders";
 export const PROFILE_ROUTE = "/profile";
+export const STATISTICS_ROUTE = "/stats";
 export const LOGOUT_ROUTE = { path: "/", action: "LOGOUT" };
