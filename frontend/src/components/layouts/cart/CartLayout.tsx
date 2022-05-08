@@ -1,7 +1,8 @@
-import { LinearProgress } from "@mui/material";
+import { Container, LinearProgress, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useGetUserCartQuery } from "../../../redux/services/cartService";
 import { RootState } from "../../../redux/store";
+import UserCart from "./userCart/UserCart";
 
 export default function CartLayout() {
   const { id } = useSelector((store: RootState) => store.userReducer);
@@ -9,5 +10,15 @@ export default function CartLayout() {
   const { data, isLoading } = useGetUserCartQuery({ userId: String(id) });
   console.log(data?.commodities);
 
-  return isLoading ? <LinearProgress /> : <div>{JSON.stringify(data)}</div>;
+  return isLoading ? (
+    <LinearProgress />
+  ) : (
+    <Container sx={{ minHeight: "100vh" }}>
+      {data && data.commodities ? (
+        <UserCart items={data.commodities} />
+      ) : (
+        <Typography>No items found</Typography>
+      )}
+    </Container>
+  );
 }

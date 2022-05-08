@@ -9,11 +9,18 @@ import { RootState } from "../../../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { SIGN_IN_ROUTE } from "../../../../utils/constants/routeNames";
 import { snackActions } from "../../../../utils/helpers/snackBarUtils";
+import {
+  useEditCartMutation,
+  useGetUserCartQuery,
+} from "../../../../redux/services/cartService";
 
 export default function DeviceContainer({ item }: { item: CommodityData }) {
   const { isAuthenticated, id } = useSelector(
     (state: RootState) => state.userReducer
   );
+  const { data } = useGetUserCartQuery({ userId: String(id) });
+
+  const [addToCart, { isLoading }] = useEditCartMutation();
   const navigate = useNavigate();
 
   const cartHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -21,6 +28,10 @@ export default function DeviceContainer({ item }: { item: CommodityData }) {
     if (!isAuthenticated) {
       navigate(SIGN_IN_ROUTE);
       snackActions.info("Please sign in to add to cart");
+    }
+    if (data) {
+      addToCart({ ...data, commodities: [...data?.commodities, item] });
+      snackActions.success("Item was added to the cart");
     }
   };
   return (

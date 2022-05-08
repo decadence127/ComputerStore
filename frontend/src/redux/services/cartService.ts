@@ -1,4 +1,4 @@
-import { CART_URL } from "./../../utils/constants/apiRoutes";
+import { CART_URL, EDIT_CART_ROUTE } from "./../../utils/constants/apiRoutes";
 import { CartState, setCart } from "./../slices/cartSlice";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { reauthBaseQuery } from "./interceptor";
@@ -32,7 +32,7 @@ export const cartApi = createApi({
     }),
     editCart: builder.mutation<any, Partial<CartData>>({
       query: (body) => ({
-        url: `${CART_URL}${body.id}`,
+        url: `${EDIT_CART_ROUTE}${body.id}`,
         method: "PUT",
         body: body,
       }),

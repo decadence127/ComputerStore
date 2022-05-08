@@ -11,20 +11,40 @@ import Typography from "@mui/material/Typography";
 import { CommodityState } from "../../../../../../redux/slices/commoditySlice";
 import { RootState } from "../../../../../../redux/store";
 import { useNavigate } from "react-router-dom";
+import {
+  useEditCartMutation,
+  useGetUserCartQuery,
+} from "../../../../../../redux/services/cartService";
+import { SIGN_IN_ROUTE } from "../../../../../../utils/constants/routeNames";
+import { snackActions } from "../../../../../../utils/helpers/snackBarUtils";
 
 interface CommodityCardProps {
   commodity?: CommodityState;
 }
 
 export default function CommodityCard({ commodity }: CommodityCardProps) {
-  const navigate = useNavigate();
-  const { isAuthenticated } = useSelector(
+  const { isAuthenticated, id } = useSelector(
     (state: RootState) => state.userReducer
   );
+  const { data } = useGetUserCartQuery({ userId: String(id) });
+  const navigate = useNavigate();
+  const [addToCart, { isLoading }] = useEditCartMutation();
 
   const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     navigate("/catalog/device/" + commodity?.id);
+  };
+
+  const cartHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!isAuthenticated) {
+      navigate(SIGN_IN_ROUTE);
+      snackActions.info("Please sign in to add to cart");
+    }
+    if (data && commodity) {
+      addToCart({ ...data, commodities: [...data?.commodities, commodity] });
+      snackActions.success("Item was added to the cart");
+    }
   };
   return (
     <Card elevation={3} sx={{ maxWidth: 240, maxHeight: 350 }}>
@@ -71,7 +91,11 @@ export default function CommodityCard({ commodity }: CommodityCardProps) {
           title={isAuthenticated ? "" : "Sign up to add this item to the cart"}
         >
           <span>
-            <Button disabled={!isAuthenticated} size="small">
+            <Button
+              disabled={!isAuthenticated}
+              onClick={cartHandler}
+              size="small"
+            >
               Add to cart
             </Button>
           </span>

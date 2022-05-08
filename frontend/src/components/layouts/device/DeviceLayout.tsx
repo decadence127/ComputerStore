@@ -18,6 +18,9 @@ import {
 } from "../../../redux/services/commodityService";
 import DeviceContainer from "./DeviceContainer/DeviceContainer";
 import styles from "./styles";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
+const RETURN_BACK = -1;
 
 export default function DeviceLayout() {
   const navigate = useNavigate();
@@ -28,7 +31,7 @@ export default function DeviceLayout() {
 
   const returnHandler = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    navigate(-1);
+    navigate(RETURN_BACK);
   };
   const cardClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -38,6 +41,7 @@ export default function DeviceLayout() {
   };
 
   useEffect(() => {
+    // Recommendation engine
     if (data && allCommodities) {
       const similarItems = allCommodities.filter((item) => {
         const dataNameWords = data.name.split(" ");
@@ -50,6 +54,8 @@ export default function DeviceLayout() {
         });
         return similar;
       });
+      console.log(similarItems);
+
       setSimilarItems(similarItems.filter((item) => item.name !== data.name));
     }
   }, [data, allCommodities]);
@@ -67,7 +73,19 @@ export default function DeviceLayout() {
         }}
       >
         <Box role="presentation" css={styles.drawerInnerBox}>
-          <Link onClick={returnHandler}>Back</Link>
+          <Link
+            sx={{
+              textDecoration: "none",
+              marginLeft: "30px",
+              fontSize: "28px",
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+            onClick={returnHandler}
+          >
+            <ArrowBackIcon />
+          </Link>
           <Typography
             margin="1rem"
             color="primary"

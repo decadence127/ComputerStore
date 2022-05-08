@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a0d1a947-3d35-4294-b4af-601d14f7f1b4" name="Changes" comment="" />
+    <list default="true" id="a0d1a947-3d35-4294-b4af-601d14f7f1b4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/layouts/device/DeviceLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layouts/device/DeviceLayout.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,15 +21,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/user/Desktop/ComputerStore/ComputerStoreBackend",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/user/Desktop/ComputerStore/ComputerStoreBackend&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -36,6 +39,8 @@
       <option name="presentableId" value="Default" />
       <updated>1651235750502</updated>
       <workItem from="1651235753687" duration="60000" />
+      <workItem from="1651917998697" duration="644000" />
+      <workItem from="1651938058954" duration="46000" />
     </task>
     <servers />
   </component>
