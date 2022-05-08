@@ -1,16 +1,31 @@
 import { Typography } from "@mui/material";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 //@ts-ignore
 import CreditCardInput from "react-credit-card-input";
 
-export default function CreditCardLayout() {
-  const [cardInfo, setCardInfo] = useState({
-    cvc: "",
-    expiry: "",
-    focus: "",
-    name: "",
-    number: "",
-  });
+interface CreditCardLayoutProps {
+  cardInfo: {
+    cvc: string;
+    expiry: string;
+    focus: string;
+    name: string;
+    number: string;
+  };
+  setCardInfo: React.Dispatch<
+    SetStateAction<{
+      cvc: string;
+      expiry: string;
+      focus: string;
+      name: string;
+      number: string;
+    }>
+  >;
+}
+
+export default function CreditCardLayout({
+  cardInfo,
+  setCardInfo,
+}: CreditCardLayoutProps) {
   const handleInputFocus = (e: any) => {
     setCardInfo({ ...cardInfo, focus: e.target.name });
   };

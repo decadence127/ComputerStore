@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import Box from "@mui/material/Box";
@@ -27,9 +27,17 @@ export const TakeOffAddress = [
 
 export default function OrderStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [stepsState, setStepsState] = React.useState(steps);
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const [selectedPayment, setSelectedPayment] = useState("CARD");
   const [selectedTakeOff, setSelectedTakeOff] = useState("TakeOff");
+  const [cardInfo, setCardInfo] = useState({
+    cvc: "",
+    expiry: "",
+    focus: "",
+    name: "",
+    number: "",
+  });
   const [currentTakeOffAddress, setCurrentTakeOffAddress] = useState(
     TakeOffAddress[0]
   );
@@ -44,6 +52,10 @@ export default function OrderStepper() {
     return skipped.has(step);
   };
 
+  useEffect(() => {
+    console.log("rerendered");
+    console.log(stepsState);
+  });
   const handleNext = () => {
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
@@ -77,7 +89,7 @@ export default function OrderStepper() {
       }}
     >
       <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => {
+        {stepsState.map((label, index) => {
           const stepProps: { completed?: boolean; disabled?: boolean } = {};
           const labelProps: {
             optional?: React.ReactNode;
@@ -85,8 +97,22 @@ export default function OrderStepper() {
           if (isStepSkipped(index)) {
             stepProps.completed = false;
           }
-          if (selectedPayment === "CASH" && index === 1) {
+          if (
+            selectedPayment === "CASH" &&
+            index === 1 &&
+            stepsState.length === 3
+          ) {
+            setStepsState((prev) => [...prev.splice(1, 1)]);
             return null;
+          }
+          if (
+            selectedPayment === "CARD" &&
+            index === 1 &&
+            stepsState.length === 2
+          ) {
+            setStepsState((prev) => [
+              ...prev.splice(1, 0, "Fill payment information"),
+            ]);
           }
 
           return (
@@ -96,7 +122,7 @@ export default function OrderStepper() {
           );
         })}
       </Stepper>
-      {activeStep === steps.length ? (
+      {activeStep === stepsState.length ? (
         <React.Fragment>
           <Typography sx={{ mt: 2, mb: 1 }}>
             All steps completed - you&apos;re finished
@@ -123,7 +149,7 @@ export default function OrderStepper() {
           )}
           {activeStep === 1 && selectedPayment === "CARD" && (
             <Box sx={{ paddingTop: "1rem" }}>
-              <CreditCardLayout />
+              <CreditCardLayout cardInfo={cardInfo} setCardInfo={setCardInfo} />
             </Box>
           )}
           {activeStep === 1 && selectedPayment === "CASH" && (
@@ -146,8 +172,15 @@ export default function OrderStepper() {
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "Order" : "Next"}
+            <Button
+              onClick={handleNext}
+              disabled={
+                activeStep === 1 &&
+                selectedPayment === "CARD" &&
+                cardInfo.number === ""
+              }
+            >
+              {activeStep === stepsState.length - 1 ? "Order" : "Next"}
             </Button>
           </Box>
         </React.Fragment>
