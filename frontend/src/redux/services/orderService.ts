@@ -17,6 +17,13 @@ export const orderApi = cartApi.injectEndpoints({
       }),
       providesTags: ["order"],
     }),
+    getUsersOrders: builder.query<OrderData[], { id: string }>({
+      query: ({ id }) => ({
+        url: `${ORDERS_ROUTE}/user/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["order"],
+    }),
     addOrder: builder.mutation<any, Omit<OrderData, "id">>({
       query: (order) => ({
         url: ORDERS_ROUTE,
@@ -51,6 +58,7 @@ export const orderApi = cartApi.injectEndpoints({
 
 export const {
   useAddOrderMutation,
+  useGetUsersOrdersQuery,
   useChangeOrderMutation,
   useGetOrdersQuery,
   useGetOrderQuery,
