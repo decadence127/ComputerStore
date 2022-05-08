@@ -14,6 +14,7 @@ export interface OrderState {
   account: UserState;
   orderDate: Date | string;
   deliveryDate: Date | string;
+  payment: "CASH" | "CARD";
   commodities: CommodityState[];
 }
 
@@ -27,6 +28,7 @@ const initialState: OrderState = {
     houseNumber: "",
   },
   account: {} as UserState,
+  payment: "CASH",
   orderDate: new Date(),
   deliveryDate: new Date(),
   commodities: [],
@@ -37,17 +39,25 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     setOrder: (state, action) => {
-      state.id = action.payload.id;
       state.condition = action.payload.condition;
       state.address = action.payload.address;
       state.account = action.payload.account;
-      state.orderDate = action.payload.orderDate;
-      state.deliveryDate = action.payload.deliveryDate;
+      state.payment = action.payload.payment;
       state.commodities = action.payload.commodities;
+    },
+    setOrderCommodities: (state, action) => {
+      state.commodities = action.payload;
+    },
+    setOrderAddress: (state, action) => {
+      state.address = action.payload;
+    },
+    setPayment: (state, action) => {
+      state.payment = action.payload;
     },
   },
 });
 
 export default orderSlice.reducer;
 
-export const { setOrder } = orderSlice.actions;
+export const { setOrder, setOrderCommodities, setOrderAddress, setPayment } =
+  orderSlice.actions;
