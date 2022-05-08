@@ -11,6 +11,7 @@ export default function OrderConfirmation() {
     <Box
       sx={{
         display: "flex",
+        minHeight: "20rem",
         flexDirection: "column",
         ml: 12,
         "&>*": { margin: "8px 0" },
