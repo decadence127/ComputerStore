@@ -4,6 +4,7 @@ import React from "react";
 import {
   CART_ROUTE,
   LOGOUT_ROUTE,
+  ORDERS_ROUTE,
   PROFILE_ROUTE,
 } from "../../utils/constants/routeNames";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +15,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useGetUserCartQuery } from "../../redux/services/cartService";
 import { RootState } from "../../redux/store";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
 interface ProfileMenuProps {
   anchorEl: HTMLElement | null;
@@ -71,16 +73,21 @@ export default function ProfileMenu({
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+        <MenuItem disabled data-path={PROFILE_ROUTE} onClick={handleClick}>
+          <PersonIcon />
+          My account
+        </MenuItem>
         <MenuItem data-path={CART_ROUTE} onClick={handleClick}>
           <Badge badgeContent={data && data.commodities.length} color="error">
             <ShoppingCartIcon />
           </Badge>
           Cart
         </MenuItem>
-        <MenuItem data-path={PROFILE_ROUTE} onClick={handleClick}>
+        <MenuItem data-path={ORDERS_ROUTE} onClick={handleClick}>
           <PersonIcon />
-          My account
+          Orders
         </MenuItem>
+
         <MenuItem
           data-path={LOGOUT_ROUTE.path}
           data-action={LOGOUT_ROUTE.action}

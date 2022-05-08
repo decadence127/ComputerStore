@@ -18,12 +18,6 @@ export const orderApi = createApi({
         method: "GET",
       }),
       providesTags: ["order"],
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        if (data) {
-          dispatch(setOrder(data));
-        }
-      },
     }),
     addOrder: builder.mutation<any, Omit<OrderData, "id">>({
       query: (order) => ({
@@ -33,16 +27,22 @@ export const orderApi = createApi({
       }),
       invalidatesTags: ["order"],
     }),
-    getOrder: builder.query<{ id: string }, OrderData>({
+    getOrder: builder.query<OrderData, { id: string }>({
       query: ({ id }) => ({
-        url: `${ORDER_ROUTE}/${id}`,
+        url: `${ORDER_ROUTE}${id}`,
         method: "GET",
       }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        const { data } = await queryFulfilled;
+        if (data) {
+          dispatch(setOrder(data));
+        }
+      },
       providesTags: ["order"],
     }),
     changeOrder: builder.mutation<any, Partial<OrderData>>({
       query: (body) => ({
-        url: `${ORDER_ROUTE}/${body.id}`,
+        url: `${ORDER_ROUTE}${body.id}`,
         method: "PUT",
         body: body,
       }),

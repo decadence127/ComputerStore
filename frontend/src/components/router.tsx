@@ -5,6 +5,7 @@ import {
   DELIVERY_ROUTE,
   DEVICE_ROUTE,
   HOME_ROUTE,
+  ORDERS_ROUTE,
   SIGN_IN_ROUTE,
   SIGN_UP_ROUTE,
 } from "../utils/constants/routeNames";
@@ -16,6 +17,7 @@ import SignInLayout from "./layouts/signin/SignInLayout";
 import SignUpLayout from "./layouts/signup/SignUpLayout";
 import { PrivateRoute } from "./common/privateRoute/PrivateRoute";
 import CartLayout from "./layouts/cart/CartLayout";
+import OrderLayout from "./layouts/order/OrderLayout/OrderLayout";
 
 function Router() {
   return (
@@ -27,6 +29,10 @@ function Router() {
       <Route path={DEVICE_ROUTE} element={<DeviceLayout />} />
       <Route path={DELIVERY_ROUTE} element={<TakeoffsLayout />} />
       <Route path={CART_ROUTE} element={<PrivateRoute to={<CartLayout />} />} />
+      <Route
+        path={ORDERS_ROUTE}
+        element={<PrivateRoute to={<OrderLayout />} />}
+      />
 
       <Route path="*" element={<Navigate to={HOME_ROUTE} />} />
     </Routes>
