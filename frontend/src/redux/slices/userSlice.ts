@@ -6,7 +6,6 @@ export interface AccountData {
   phone: string;
   firstname: string;
   lastname: string;
-  token: string;
 }
 
 export interface UserState {
@@ -14,6 +13,7 @@ export interface UserState {
   username: string;
   role: string;
   accountData: AccountData;
+  token: string;
   email: string;
   isAuthenticated: boolean;
 }
@@ -24,10 +24,10 @@ const initialState: UserState = {
   isAuthenticated: false,
   email: "",
   role: "",
+  token: localStorage.getItem("accessToken") || "",
   accountData: {
     phone: "",
     firstname: "",
-    token: "",
     lastname: "",
   },
 };
@@ -39,7 +39,7 @@ export const userSlice = createSlice({
     setCredentials: (
       state,
       {
-        payload: { id, username, role, email, accountData },
+        payload: { id, username, role, email, token, accountData },
       }: PayloadAction<UserCredentialData>
     ) => {
       state.id = id;
@@ -47,12 +47,13 @@ export const userSlice = createSlice({
       state.isAuthenticated = true;
       state.role = role;
       state.email = email;
+      state.token = token;
       state.accountData = accountData;
 
-      // localStorage.setItem("accessToken", accountData.token);
+      localStorage.setItem("accessToken", token);
     },
     clearCredentials: () => {
-      // localStorage.removeItem("accessToken");
+      localStorage.removeItem("accessToken");
       const cleanState = { ...initialState, isAuthenticated: false, token: "" };
       return cleanState;
     },

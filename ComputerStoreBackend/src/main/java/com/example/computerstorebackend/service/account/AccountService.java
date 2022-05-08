@@ -17,6 +17,8 @@ public interface AccountService extends GenericService<Account> {
 
     List<Account> findByAccountData_Firstname(String firstName);
 
+    Optional<Account> findByToken(String token);
+
     List<Account> findByAccountData_Lastname(String lastName);
 
 

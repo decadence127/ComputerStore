@@ -48,6 +48,12 @@ export const authApi = createApi({
         url: REFRESH_ROUTE,
         method: "GET",
       }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        const { data } = await queryFulfilled;
+        if (data) {
+          dispatch(setCredentials(data));
+        }
+      },
     }),
     logout: builder.mutation<void, void>({
       query: () => ({

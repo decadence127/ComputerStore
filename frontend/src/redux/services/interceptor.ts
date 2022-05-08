@@ -13,7 +13,8 @@ import { UserCredentialData } from "./authService";
 export const baseQuery = fetchBaseQuery({
   baseUrl: API_ROUTE,
   prepareHeaders: (headers, { getState }) => {
-    const { token } = (getState() as RootState).userReducer.accountData;
+    const user = (getState() as RootState).userReducer;
+    const { token } = (getState() as RootState).userReducer;
 
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);

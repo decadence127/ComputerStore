@@ -41,6 +41,9 @@ public class Account {
     private String email;
 
     @Column
+    private String token;
+
+    @Column
     @Embedded
     private AccountData accountData;
 

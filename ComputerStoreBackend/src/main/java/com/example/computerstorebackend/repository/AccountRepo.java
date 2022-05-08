@@ -18,6 +18,8 @@ public interface AccountRepo extends GenericRepository<Account> {
 
     List<Account> findByAccountData_Firstname(String firstName);
 
+    Optional<Account> findByToken(String token);
+
     List<Account> findByAccountData_Lastname(String lastName);
 
     Optional<Account> findByEmail(String email);

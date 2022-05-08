@@ -9,6 +9,7 @@ import {
   useAddCommodityMutation,
 } from "../../../../redux/services/commodityService";
 import styles from "./styles";
+import { snackActions } from "../../../../utils/helpers/snackBarUtils";
 
 interface ItemPropsType {
   setItemFormMode: (prop: boolean) => void;
@@ -36,9 +37,15 @@ function AddItemForm({ setItemFormMode }: ItemPropsType): ReactElement {
   const handleSubmit = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     const result = await addCommodity({
-      ...itemData,
+      description: itemData.description,
+      name: itemData.name,
+      price: Number(itemData.price),
+      quantity: Number(itemData.quantity),
     });
-    console.log(result);
+    if (result) {
+      setItemFormMode(false);
+      snackActions.success("Item added successfully");
+    }
   };
 
   return (

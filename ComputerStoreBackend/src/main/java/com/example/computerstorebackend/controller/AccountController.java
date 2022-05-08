@@ -1,6 +1,5 @@
 package com.example.computerstorebackend.controller;
 
-import com.example.computerstorebackend.dto.AccountDTO;
 import com.example.computerstorebackend.exception.ResourceNotFoundException;
 import com.example.computerstorebackend.mapper.AccountMapper;
 import com.example.computerstorebackend.model.Account;
@@ -9,23 +8,14 @@ import com.example.computerstorebackend.model.Cart;
 import com.example.computerstorebackend.model.Role;
 import com.example.computerstorebackend.service.account.AccountService;
 import com.example.computerstorebackend.service.cart.CartService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -54,21 +44,34 @@ public class AccountController {
         return accountService.findByRole(Role.ADMIN);
     }
 
+
     @GetMapping("/account")
     public List<Account> getAllAccounts() {
         return accountService.findAll();
     }
 
+    @GetMapping("/refresh")
+    public ResponseEntity refresh(@RequestHeader("Authorization") String bearer){
+        String token = bearer.substring(7);
+        System.out.println(token);
+        Optional<Account> acc = accountService.findByToken(token);
+        if(acc.isPresent()){
+            return ResponseEntity.ok(acc);
+        }
+        HashMap<String, String> errorEntity = new HashMap<>();
+        errorEntity.put("status", UNAUTHORIZED.toString());
+        errorEntity.put("msg", "Unauthorized");
 
+        return new ResponseEntity<>(errorEntity, UNAUTHORIZED);
+    }
     @PostMapping("/signIn")
     public ResponseEntity signIn(@RequestBody Map<String, String> str) {
         String email = str.get("email");
         String password = str.get("password");
-        System.out.println("email from body " + email);
         Optional<Account> acc = accountService.findByEmail(email);
-        System.out.println("Opshnl)) " + acc);
         if (acc.isPresent()) {
             if(Objects.equals(acc.get().getPassword(), password)) {
+                acc.get().setToken(acc.get().getEmail());
                 return ResponseEntity.ok(acc);
             } else{
                 HashMap<String, String> errorEntity = new HashMap<>();
@@ -92,6 +95,7 @@ public class AccountController {
         if (byEmail.isEmpty()) {
 //            user.setPassword(passwordEncoder.encode(user.getPassword()));
             account.setRole(Role.USER);
+            account.setToken(account.getEmail());
             Account acc = accountService.save(account);
             Cart cart = Cart.builder().account(acc).build();
             cartService.save(cart);
