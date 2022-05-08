@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -15,6 +15,8 @@ import {
   setOrderAddress,
   setPayment,
 } from "../../../../../redux/slices/orderSlice";
+import { useAddOrderMutation } from "../../../../../redux/services/orderService";
+import { RootState } from "../../../../../redux/store";
 
 const steps = ["Fill the form", "Fill payment information", "Confirm the form"];
 
@@ -27,6 +29,8 @@ export const TakeOffAddress = [
 
 export default function OrderStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [makeOrder, { isLoading }] = useAddOrderMutation();
+  const order = useSelector((store: RootState) => store.orderReducer);
   const [stepsState, setStepsState] = React.useState(steps);
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const [selectedPayment, setSelectedPayment] = useState("CARD");
@@ -52,11 +56,7 @@ export default function OrderStepper() {
     return skipped.has(step);
   };
 
-  useEffect(() => {
-    console.log("rerendered");
-    console.log(stepsState);
-  });
-  const handleNext = () => {
+  const handleNext = async () => {
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
@@ -69,7 +69,14 @@ export default function OrderStepper() {
       dispatch(setPayment(selectedPayment));
       dispatch(setOrderAddress(address));
     }
+
+    if (activeStep === stepsState.length - 1) {
+      const { id, ...rest } = order;
+      const result = await makeOrder(rest);
+      console.log(result);
+    }
   };
+
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -125,7 +132,7 @@ export default function OrderStepper() {
       {activeStep === stepsState.length ? (
         <React.Fragment>
           <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
+            Your order has been created!
           </Typography>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Box sx={{ flex: "1 1 auto" }} />
