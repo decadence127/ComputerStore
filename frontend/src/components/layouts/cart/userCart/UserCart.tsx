@@ -2,28 +2,35 @@ import { Paper, Box, Typography, Link, Button, Checkbox } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {
+  CartData,
+  useEditCartMutation,
+} from "../../../../redux/services/cartService";
 import { CommodityData } from "../../../../redux/services/commodityService";
+import { CommodityState } from "../../../../redux/slices/commoditySlice";
 import {
   setAccount,
   setOrderCommodities,
 } from "../../../../redux/slices/orderSlice";
 import { RootState } from "../../../../redux/store";
+import { snackActions } from "../../../../utils/helpers/snackBarUtils";
 import OrderModal from "../../order/orderModal/OrderModal";
 
 interface UserCartProps {
-  items: CommodityData[];
+  cart: CartData;
 }
 
-export default function UserCart({ items }: UserCartProps) {
+export default function UserCart({ cart }: UserCartProps) {
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedCommodities, setSelectedCommodities] = useState<
     CommodityData[]
   >([]);
   const navigate = useNavigate();
   const account = useSelector((store: RootState) => store.userReducer);
-
+  const [editCart, { isLoading }] = useEditCartMutation();
   const [openOrderModal, setOpenOrderModal] = useState(false);
   const dispatch = useDispatch();
+
   const handleClick = (
     event: React.MouseEvent<unknown>,
     item: CommodityData
@@ -63,11 +70,31 @@ export default function UserCart({ items }: UserCartProps) {
     dispatch(setAccount(account));
   };
 
+  const deleteHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (cart.commodities) {
+      const selectedIndexes = selectedCommodities.reduce((acc, element) => {
+        acc.push(cart.commodities.indexOf(element as CommodityState));
+        return acc;
+      }, [] as number[]);
+      const updatedCommodities = [...cart.commodities];
+      selectedIndexes.forEach((value) => updatedCommodities.splice(value, 1));
+      const result = await editCart({
+        ...cart,
+        commodities: updatedCommodities,
+      });
+
+      if (result) {
+        snackActions.success("Selected items were deleted from your cart");
+        setSelectedCommodities([]);
+      }
+    }
+  };
+
   const isSelected = (item: CommodityData) =>
     selectedCommodities.indexOf(item) !== -1;
 
   return (
-    <Paper sx={{ marginTop: "5rem", padding: "1rem" }}>
+    <Paper sx={{ margin: "5rem 0 ", padding: "1rem" }}>
       <Typography color="primary" variant="h4">
         Cart
       </Typography>
@@ -85,10 +112,10 @@ export default function UserCart({ items }: UserCartProps) {
         <Box>Name</Box>
         <Box>Price</Box>
       </Box>
-      {items.map((item, id) => {
+      {cart.commodities.map((item, id) => {
         const isItemSelected = isSelected(item);
         return (
-          <React.Fragment key={item.id}>
+          <React.Fragment key={id}>
             <Box
               sx={{ display: "flex", padding: "1.5rem" }}
               onClick={(event) => handleClick(event, item)}
@@ -130,10 +157,18 @@ export default function UserCart({ items }: UserCartProps) {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "flex-end",
+          justifyContent: "space-between",
           padding: "1rem",
         }}
       >
+        <Button
+          variant="contained"
+          color="error"
+          onClick={deleteHandler}
+          disabled={selectedCommodities.length === 0}
+        >
+          Delete
+        </Button>
         <Button
           variant="contained"
           onClick={orderHandler}

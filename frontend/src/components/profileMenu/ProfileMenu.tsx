@@ -91,16 +91,16 @@ export default function ProfileMenu({
           Orders
         </MenuItem>
         {role === "ADMIN" && (
-          <>
-            <MenuItem data-path={ALL_ORDERS_ROUTE} onClick={handleClick}>
-              <ShoppingBasketIcon />
-              User's orders
-            </MenuItem>
-            <MenuItem data-path={STATISTICS_ROUTE} onClick={handleClick}>
-              <StackedLineChartIcon />
-              Statistics
-            </MenuItem>
-          </>
+          <MenuItem data-path={ALL_ORDERS_ROUTE} onClick={handleClick}>
+            <ShoppingBasketIcon />
+            User's orders
+          </MenuItem>
+        )}
+        {role === "ADMIN" && (
+          <MenuItem data-path={STATISTICS_ROUTE} onClick={handleClick}>
+            <StackedLineChartIcon />
+            Statistics
+          </MenuItem>
         )}
 
         <MenuItem

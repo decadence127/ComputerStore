@@ -9,7 +9,7 @@ const footerStyles = css({
   width: "calc(100vw-0.75rem)",
   height: "120px",
   boxShadow: "0 -4px 8px -2px rgba(115,115,115,0.75)",
-  zIndex: "5000",
+  zIndex: "1350",
 });
 
 const flexColumn = css({

@@ -9,6 +9,7 @@ import {
   ORDERS_ROUTE,
   SIGN_IN_ROUTE,
   SIGN_UP_ROUTE,
+  STATISTICS_ROUTE,
 } from "../utils/constants/routeNames";
 import CatalogLayout from "./layouts/catalogPage";
 import TakeoffsLayout from "./layouts/takeOff/TakeoffLayout";
@@ -20,6 +21,7 @@ import { PrivateRoute } from "./common/privateRoute/PrivateRoute";
 import CartLayout from "./layouts/cart/CartLayout";
 import OrderLayout from "./layouts/order/OrderLayout/OrderLayout";
 import AllOrdersLayout from "./layouts/order/AllOrdersLayout/AllOrdersLayout";
+import { StatisticsLayout } from "./statistics/StatisticsLayout";
 
 function Router() {
   return (
@@ -38,6 +40,12 @@ function Router() {
       <Route
         path={ALL_ORDERS_ROUTE}
         element={<PrivateRoute requiredRole="ADMIN" to={<AllOrdersLayout />} />}
+      />
+      <Route
+        path={STATISTICS_ROUTE}
+        element={
+          <PrivateRoute requiredRole="ADMIN" to={<StatisticsLayout />} />
+        }
       />
 
       <Route path="*" element={<Navigate to={HOME_ROUTE} />} />

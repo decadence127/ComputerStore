@@ -14,7 +14,7 @@ export default function CartLayout() {
   ) : (
     <Container sx={{ minHeight: "100vh" }}>
       {data && data.commodities ? (
-        <UserCart items={data.commodities} />
+        <UserCart cart={data} />
       ) : (
         <Typography>No items found</Typography>
       )}
