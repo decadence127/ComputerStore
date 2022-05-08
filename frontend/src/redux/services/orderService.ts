@@ -4,13 +4,11 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { ORDER_ROUTE, ORDERS_ROUTE } from "../../utils/constants/apiRoutes";
 import { setOrder } from "../slices/orderSlice";
 import { reauthBaseQuery } from "./interceptor";
+import { cartApi } from "./cartService";
 
 export interface OrderData extends OrderState {}
 
-export const orderApi = createApi({
-  reducerPath: "orderApi",
-  tagTypes: ["order"],
-  baseQuery: reauthBaseQuery,
+export const orderApi = cartApi.injectEndpoints({
   endpoints: (builder) => ({
     getOrders: builder.query<OrderData[], void>({
       query: () => ({
@@ -25,7 +23,7 @@ export const orderApi = createApi({
         method: "POST",
         body: order,
       }),
-      invalidatesTags: ["order"],
+      invalidatesTags: ["order", "cart"],
     }),
     getOrder: builder.query<OrderData, { id: string }>({
       query: ({ id }) => ({

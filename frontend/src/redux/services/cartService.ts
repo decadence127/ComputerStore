@@ -7,7 +7,7 @@ export interface CartData extends CartState {}
 
 export const cartApi = createApi({
   reducerPath: "cartApi",
-  tagTypes: ["cart"],
+  tagTypes: ["cart", "order"],
   baseQuery: reauthBaseQuery,
   endpoints: (builder) => ({
     getCartById: builder.query<CartData, { id: string }>({
