@@ -40,17 +40,19 @@ public class OrderController {
     private OrderMapper orderMapper;
     private OrderService orderService;
     private CartService cartService;
+    private CommodityService commodityService;
 
     @Autowired
-    public OrderController(OrderMapper orderMapper, OrderService orderService, CartService cartService) {
+    public OrderController(OrderMapper orderMapper, OrderService orderService, CartService cartService, CommodityService commodityService) {
         this.orderMapper = orderMapper;
         this.orderService = orderService;
         this.cartService = cartService;
+        this.commodityService = commodityService;
     }
 
     @GetMapping("/order")
-    public List<Order> getOrders() {
-        return orderService.findAll();
+    public List<OrderDTO> getOrders() {
+        return orderMapper.toListDto(orderService.findAll());
     }
 
     @PostMapping("/order")
@@ -60,6 +62,8 @@ public class OrderController {
                 () -> new ResourceNotFoundException("Cart not found with id :" +
                         order.getAccount().getId()));
         for (Commodity commodity : order.getCommodities()) {
+            commodity = commodityService.findById(commodity.getId()).orElseThrow(
+                    () -> new ResourceNotFoundException("Commodity not found" ));
             cart.getCommodities().remove(commodity);
             int quantity = commodity.getQuantity();
             commodity.setQuantity(--quantity);
