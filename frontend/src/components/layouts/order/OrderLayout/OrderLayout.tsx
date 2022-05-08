@@ -83,15 +83,22 @@ export default function OrderLayout() {
 
   const tabelizeData = useCallback(
     (order: OrderData) => {
+      const condition = (value: string) =>
+        value === "" || value === null ? "-" : value;
+
       return {
-        id: order.id,
-        account: `${order.account.accountData.firstname} ${order.account.accountData.lastname}`,
-        address: `${order.address.city}, ${order.address.street}, ${order.address.houseNumber}`,
-        condition: order.condition,
-        delivery: order.delivery,
-        payment: order.payment,
-        orderDate: order.orderDate,
-        deliveryDate: order.deliveryDate,
+        id: condition(order.id as string),
+        account: condition(
+          `${order.account.accountData.firstname} ${order.account.accountData.lastname}`
+        ),
+        address: condition(
+          `${order.address.city}, ${order.address.street}, ${order.address.houseNumber}`
+        ),
+        condition: condition(order.condition),
+        delivery: condition(order.delivery),
+        payment: condition(order.payment),
+        orderDate: condition(order.orderDate),
+        deliveryDate: condition(order.deliveryDate),
       } as unknown as OrderData;
     },
     [data]

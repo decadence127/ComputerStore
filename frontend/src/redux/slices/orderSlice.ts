@@ -31,8 +31,8 @@ const initialState: OrderState = {
   },
   account: {} as UserState,
   payment: "CASH",
-  orderDate: new Date().toDateString(),
-  deliveryDate: new Date().toDateString(),
+  orderDate: "",
+  deliveryDate: "",
   commodities: [],
 };
 

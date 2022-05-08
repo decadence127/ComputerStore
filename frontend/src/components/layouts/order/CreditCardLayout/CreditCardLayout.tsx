@@ -26,22 +26,42 @@ export default function CreditCardLayout({
   cardInfo,
   setCardInfo,
 }: CreditCardLayoutProps) {
-  const handleInputFocus = (e: any) => {
-    setCardInfo({ ...cardInfo, focus: e.target.name });
-  };
+  const handleNumberChange = (e: any) => {
+    const { value } = e.target;
 
-  const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
-
-    setCardInfo({ ...cardInfo, [name]: value });
+    setCardInfo({ ...cardInfo, number: value });
   };
+  const handleCVCChange = (e: any) => {
+    const { value } = e.target;
+
+    setCardInfo({ ...cardInfo, cvc: value });
+  };
+  const handleExpiryChange = (e: any) => {
+    const { value } = e.target;
+
+    setCardInfo({ ...cardInfo, expiry: value });
+  };
+  console.log(cardInfo);
 
   return (
     <div id="PaymentForm">
       <Typography sx={{ margin: "20px 10px" }} color="primary" variant="body1">
         Input credit card credentials
       </Typography>
-      <CreditCardInput />
+      <CreditCardInput
+        cardNumberInputProps={{
+          value: cardInfo.number,
+          onChange: handleNumberChange,
+        }}
+        cardCVCInputProps={{
+          value: cardInfo.cvc,
+          onChange: handleCVCChange,
+        }}
+        cardExpiryInputProps={{
+          value: cardInfo.expiry,
+          onChange: handleExpiryChange,
+        }}
+      />
     </div>
   );
 }
