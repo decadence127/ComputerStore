@@ -55,6 +55,11 @@ public class OrderController {
         return orderMapper.toListDto(orderService.findAll());
     }
 
+    @GetMapping("/order/user/{id}")
+    public List<OrderDTO> getOrdersByAccId(@PathVariable Long id) {
+        return orderMapper.toListDto(orderService.findByAccount_Id(id));
+    }
+
     @PostMapping("/order")
     public ResponseEntity createOrder(@RequestBody Order order) {
         Cart cart = cartService.findByAccount_Id(
