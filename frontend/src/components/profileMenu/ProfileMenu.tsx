@@ -1,6 +1,6 @@
 import { Badge, IconButton, Menu, MenuItem } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ALL_ORDERS_ROUTE,
   CART_ROUTE,
@@ -34,7 +34,14 @@ export default function ProfileMenu({
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id, role } = useSelector((store: RootState) => store.userReducer);
-  const { data } = useGetUserCartQuery({ userId: String(id) });
+  const [skip, setSkip] = useState(true);
+  const { data } = useGetUserCartQuery({ userId: String(id) }, { skip });
+
+  useEffect(() => {
+    if (id) {
+      setSkip(false);
+    }
+  }, [id]);
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     const { path, action } = e.currentTarget.dataset;

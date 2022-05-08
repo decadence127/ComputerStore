@@ -30,7 +30,7 @@ export default function OrderConfirmation() {
             `${item.name} ${index !== arr.length - 1 ? ", " : ""}`
         )}
       </Typography>
-      <Typography>Order date: {orderDate.toLocaleString()}</Typography>
+      <Typography>Order date: {new Date().toLocaleString()}</Typography>
       <Typography>Payment type: {payment}</Typography>
       <Typography>
         Total price: {commodities.reduce((acc, item) => (acc += item.price), 0)}{" "}

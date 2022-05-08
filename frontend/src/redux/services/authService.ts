@@ -18,6 +18,7 @@ export interface RegistrationRequest extends Pick<UserState, "email"> {
   accountData: {
     firstname: string;
     lastname: string;
+    phone: string;
   };
 }
 export interface UserCredentialData extends UserState {}

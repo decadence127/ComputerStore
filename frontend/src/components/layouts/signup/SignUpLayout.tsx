@@ -27,6 +27,7 @@ const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
   const [password, setPassword] = React.useState("");
   const [firstname, setFirstName] = React.useState("");
   const [lastname, setLastName] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
 
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
@@ -45,7 +46,7 @@ const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
     const result = await register({
       email,
       password,
-      accountData: { firstname, lastname },
+      accountData: { firstname, lastname, phone: phoneNumber },
     });
     if (result && !("error" in result)) {
       navigate(HOME_ROUTE);
@@ -94,6 +95,16 @@ const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
                 />
               </FormControl>
             </Box>
+            <FormControl sx={{ minWidth: "95%", margin: "0 20px" }}>
+              <TextField
+                type="text"
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required
+                variant="outlined"
+                label="Phone number"
+                id="phone"
+              />
+            </FormControl>
             <FormControl sx={{ minWidth: "95%", margin: "0 20px" }}>
               <TextField
                 type={showPassword ? "text" : "password"}
