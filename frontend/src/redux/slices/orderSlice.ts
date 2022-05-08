@@ -54,10 +54,18 @@ const orderSlice = createSlice({
     setPayment: (state, action) => {
       state.payment = action.payload;
     },
+    setAccount: (state, action) => {
+      state.account = action.payload;
+    },
   },
 });
 
 export default orderSlice.reducer;
 
-export const { setOrder, setOrderCommodities, setOrderAddress, setPayment } =
-  orderSlice.actions;
+export const {
+  setOrder,
+  setOrderCommodities,
+  setOrderAddress,
+  setPayment,
+  setAccount,
+} = orderSlice.actions;

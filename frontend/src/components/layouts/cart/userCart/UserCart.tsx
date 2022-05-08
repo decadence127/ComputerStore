@@ -1,9 +1,13 @@
 import { Paper, Box, Typography, Link, Button, Checkbox } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CommodityData } from "../../../../redux/services/commodityService";
-import { setOrderCommodities } from "../../../../redux/slices/orderSlice";
+import {
+  setAccount,
+  setOrderCommodities,
+} from "../../../../redux/slices/orderSlice";
+import { RootState } from "../../../../redux/store";
 import OrderModal from "../../order/orderModal/OrderModal";
 
 interface UserCartProps {
@@ -16,6 +20,7 @@ export default function UserCart({ items }: UserCartProps) {
     CommodityData[]
   >([]);
   const navigate = useNavigate();
+  const account = useSelector((store: RootState) => store.userReducer);
 
   const [openOrderModal, setOpenOrderModal] = useState(false);
   const dispatch = useDispatch();
@@ -55,6 +60,7 @@ export default function UserCart({ items }: UserCartProps) {
   const orderHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     setOpenOrderModal(true);
     dispatch(setOrderCommodities(selectedCommodities));
+    dispatch(setAccount(account));
   };
 
   const isSelected = (item: CommodityData) =>
