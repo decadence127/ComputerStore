@@ -14,6 +14,7 @@ import OrderForm from "../orderForm/OrderForm";
 import {
   setOrderAddress,
   setPayment,
+  setDelivery,
 } from "../../../../../redux/slices/orderSlice";
 import { useAddOrderMutation } from "../../../../../redux/services/orderService";
 import { RootState } from "../../../../../redux/store";
@@ -34,7 +35,7 @@ export default function OrderStepper() {
   const [stepsState, setStepsState] = React.useState(steps);
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const [selectedPayment, setSelectedPayment] = useState("CARD");
-  const [selectedTakeOff, setSelectedTakeOff] = useState("TakeOff");
+  const [selectedTakeOff, setSelectedTakeOff] = useState("TAKEOFF");
   const [cardInfo, setCardInfo] = useState({
     cvc: "",
     expiry: "",
@@ -68,6 +69,7 @@ export default function OrderStepper() {
     if (activeStep === 0) {
       dispatch(setPayment(selectedPayment));
       dispatch(setOrderAddress(address));
+      dispatch(setDelivery(selectedTakeOff));
     }
 
     if (activeStep === stepsState.length - 1) {
@@ -141,7 +143,16 @@ export default function OrderStepper() {
       ) : (
         <React.Fragment>
           {activeStep === 0 && (
-            <Box sx={{ paddingTop: "1rem" }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                minWidth: "650px",
+                paddingTop: "1rem",
+                minHeight: "20rem",
+              }}
+            >
               <OrderForm
                 currentTakeOffAddress={currentTakeOffAddress}
                 setCurrentTakeOffAddress={setCurrentTakeOffAddress}
@@ -155,12 +166,12 @@ export default function OrderStepper() {
             </Box>
           )}
           {activeStep === 1 && selectedPayment === "CARD" && (
-            <Box sx={{ paddingTop: "1rem" }}>
+            <Box sx={{ paddingTop: "1rem", minHeight: "20rem" }}>
               <CreditCardLayout cardInfo={cardInfo} setCardInfo={setCardInfo} />
             </Box>
           )}
           {activeStep === 1 && selectedPayment === "CASH" && (
-            <Box sx={{ paddingTop: "1rem" }}>
+            <Box sx={{ paddingTop: "1rem", minHeight: "20rem" }}>
               <OrderConfirmation />
             </Box>
           )}

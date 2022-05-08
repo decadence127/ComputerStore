@@ -87,81 +87,77 @@ export default function OrderForm({
   };
 
   return (
-    <Box>
-      <form
-        style={{ display: "flex", justifyContent: "center", width: "100%" }}
+    <form style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-evenly",
+          width: "100%",
+          "&>*": {
+            margin: "0 2rem",
+          },
+        }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-evenly",
-            width: "100%",
-            "&>*": {
-              margin: "0 2rem",
-            },
-          }}
-        >
-          <FormControl sx={{ maxWidth: "240px" }}>
-            <FormLabel>Delivery</FormLabel>
-            <RadioGroup onChange={handleDeliveryRadio} value={selectedTakeOff}>
-              <FormControlLabel
-                value="TakeOff"
-                control={<Radio />}
-                label="Takeoff"
+        <FormControl sx={{ maxWidth: "240px" }}>
+          <FormLabel>Delivery</FormLabel>
+          <RadioGroup onChange={handleDeliveryRadio} value={selectedTakeOff}>
+            <FormControlLabel
+              value="TAKEOFF"
+              control={<Radio />}
+              label="Takeoff"
+            />
+            <FormControlLabel
+              value="DELIVERY"
+              control={<Radio />}
+              label="Delivery"
+            />
+          </RadioGroup>
+          {selectedTakeOff === "TAKEOFF" ? (
+            <Select
+              onChange={handleTakeOffSelect}
+              value={currentTakeOffAddress}
+            >
+              {TakeOffAddress.map((address) => (
+                <MenuItem key={address} value={address}>
+                  {address}
+                </MenuItem>
+              ))}
+            </Select>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                "&>*": { margin: "8px 0" },
+              }}
+            >
+              <TextField onChange={addressHandler} name="city" label="City" />
+              <TextField
+                onChange={addressHandler}
+                name="street"
+                label="Street"
               />
-              <FormControlLabel
-                value="Delivery"
-                control={<Radio />}
-                label="Delivery"
+              <TextField
+                onChange={addressHandler}
+                name="houseNumber"
+                label="House"
               />
-            </RadioGroup>
-            {selectedTakeOff === "TakeOff" ? (
-              <Select
-                onChange={handleTakeOffSelect}
-                value={currentTakeOffAddress}
-              >
-                {TakeOffAddress.map((address) => (
-                  <MenuItem key={address} value={address}>
-                    {address}
-                  </MenuItem>
-                ))}
-              </Select>
-            ) : (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  "&>*": { margin: "8px 0" },
-                }}
-              >
-                <TextField onChange={addressHandler} name="city" label="City" />
-                <TextField
-                  onChange={addressHandler}
-                  name="street"
-                  label="Street"
-                />
-                <TextField
-                  onChange={addressHandler}
-                  name="houseNumber"
-                  label="House"
-                />
-              </Box>
-            )}
-          </FormControl>
-          <FormControl>
-            <FormLabel>Payment</FormLabel>
-            <RadioGroup onChange={handlePaymentRadio} value={payment}>
-              <FormControlLabel value="CASH" control={<Radio />} label="Cash" />
-              <FormControlLabel
-                value="CARD"
-                control={<Radio />}
-                label="Credit/Debit Card"
-              />
-            </RadioGroup>
-          </FormControl>
-        </Box>
-      </form>
-    </Box>
+            </Box>
+          )}
+        </FormControl>
+        <FormControl>
+          <FormLabel>Payment</FormLabel>
+          <RadioGroup onChange={handlePaymentRadio} value={payment}>
+            <FormControlLabel value="CASH" control={<Radio />} label="Cash" />
+            <FormControlLabel
+              value="CARD"
+              control={<Radio />}
+              label="Credit/Debit Card"
+            />
+          </RadioGroup>
+        </FormControl>
+      </Box>
+    </form>
   );
 }

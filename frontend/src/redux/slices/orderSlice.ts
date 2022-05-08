@@ -15,12 +15,14 @@ export interface OrderState {
   orderDate: Date | string;
   deliveryDate: Date | string;
   payment: "CASH" | "CARD";
+  delivery: "TAKEOFF" | "DELIVERY";
   commodities: CommodityState[];
 }
 
 const initialState: OrderState = {
   id: "",
   condition: "PROCESSING",
+  delivery: "TAKEOFF",
   address: {
     id: "",
     city: "",
@@ -57,6 +59,9 @@ const orderSlice = createSlice({
     setAccount: (state, action) => {
       state.account = action.payload;
     },
+    setDelivery: (state, action) => {
+      state.delivery = action.payload;
+    },
   },
 });
 
@@ -68,4 +73,5 @@ export const {
   setOrderAddress,
   setPayment,
   setAccount,
+  setDelivery,
 } = orderSlice.actions;

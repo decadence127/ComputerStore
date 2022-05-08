@@ -27,8 +27,6 @@ export default function OrderModal({
   handleClose,
   commodities,
 }: OrderModalProps) {
-  const [makeOrder, { isLoading }] = useAddOrderMutation();
-
   return (
     <Modal
       open={open}
