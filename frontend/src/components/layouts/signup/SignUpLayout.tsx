@@ -1,7 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
+import { css } from "@emotion/react";
 
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
@@ -17,21 +20,55 @@ import {
 
 import { useRegistrationMutation } from "../../../redux/services/authService";
 import { HOME_ROUTE } from "../../../utils/constants/routeNames";
+import { snackActions } from "../../../utils/helpers/snackBarUtils";
+import { NavigateState } from "../../common/privateRoute/PrivateRoute";
 import styles from "./styles";
+import { validationSchema } from "./validationSchema";
 
 interface SignUpLayoutProps {}
 
+interface InputProps {
+  firstname: string;
+  lastname: string;
+  phoneNumber: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [firstname, setFirstName] = React.useState("");
-  const [lastname, setLastName] = React.useState("");
-  const [phoneNumber, setPhoneNumber] = React.useState("");
+
+  const formOptions = {
+    defaultValues: {
+      name: "",
+      surname: "",
+      email: "",
+      password: "",
+      phoneNumber: "",
+      confirmPassword: "",
+    },
+    resolver: yupResolver(validationSchema),
+  };
+  const {
+    register: reg,
+    handleSubmit,
+    formState,
+  } = useForm<InputProps>(formOptions);
+  const { errors, dirtyFields } = formState;
+
+  const areDirtyFields =
+    !dirtyFields.firstname ||
+    !dirtyFields.lastname ||
+    !dirtyFields.email ||
+    !dirtyFields.password ||
+    !dirtyFields.phoneNumber ||
+    !dirtyFields.confirmPassword;
 
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
-  const [register, { isLoading }] = useRegistrationMutation();
+  const [registration, { isLoading }] = useRegistrationMutation();
+  const location = useLocation();
 
   const handleMouseHoldPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
     setShowPassword(!showPassword);
@@ -40,16 +77,26 @@ const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
   const returnHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     navigate(-1);
   };
-  const submitHandler = async (e: React.MouseEvent<HTMLFormElement>) => {
-    e.preventDefault();
 
-    const result = await register({
-      email,
-      password,
-      accountData: { firstname, lastname, phone: phoneNumber },
+  const onSubmit: SubmitHandler<InputProps> = async (
+    formData
+  ): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { confirmPassword, ...requestData } = formData;
+    const result = await registration({
+      email: formData.email,
+      password: formData.password,
+      accountData: {
+        firstname: formData.firstname,
+        lastname: formData.lastname,
+        phone: formData.phoneNumber,
+      },
     });
     if (result && !("error" in result)) {
-      navigate(HOME_ROUTE);
+      const from =
+        (location.state as NavigateState)?.from.pathname || HOME_ROUTE;
+      navigate(from);
+      snackActions.success("Registration successful");
     }
   };
 
@@ -60,13 +107,23 @@ const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
           SIGN UP
         </Typography>
         <Paper elevation={4} css={styles.innerBox}>
-          <form onSubmit={submitHandler}>
+          <form
+            css={css({
+              padding: "0.8rem",
+              "&>*": {
+                margin: "0.5rem",
+              },
+            })}
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <FormControl sx={{ minWidth: "95%", margin: "0 20px" }}>
               <TextField
-                onChange={(e) => setEmail(e.target.value)}
                 required
                 variant="outlined"
                 label="Email"
+                {...reg("email")}
+                error={!!errors.email?.message}
+                helperText={errors.email?.message}
                 id="email"
               />
             </FormControl>
@@ -80,15 +137,21 @@ const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
             >
               <FormControl fullWidth sx={{ marginRight: "10px" }}>
                 <TextField
-                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                  error={!!errors.firstname?.message}
+                  helperText={errors.firstname?.message}
                   variant="outlined"
+                  {...reg("firstname")}
                   label="First Name"
                   id="firstname"
                 />
               </FormControl>
               <FormControl fullWidth sx={{ marginLeft: "10px" }}>
                 <TextField
-                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                  error={!!errors.lastname?.message}
+                  helperText={errors.lastname?.message}
+                  {...reg("lastname")}
                   variant="outlined"
                   label="Last Name"
                   id="lastname"
@@ -97,9 +160,12 @@ const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
             </Box>
             <FormControl sx={{ minWidth: "95%", margin: "0 20px" }}>
               <TextField
-                type="text"
-                onChange={(e) => setPhoneNumber(e.target.value)}
                 required
+                error={!!errors.phoneNumber?.message}
+                helperText={errors.phoneNumber?.message}
+                type="text"
+                {...reg("phoneNumber")}
+                name="phoneNumber"
                 variant="outlined"
                 label="Phone number"
                 id="phone"
@@ -107,11 +173,13 @@ const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
             </FormControl>
             <FormControl sx={{ minWidth: "95%", margin: "0 20px" }}>
               <TextField
-                type={showPassword ? "text" : "password"}
-                onChange={(e) => setPassword(e.target.value)}
                 required
+                error={!!errors.password?.message}
+                helperText={errors.password?.message}
+                type={showPassword ? "text" : "password"}
                 variant="outlined"
                 label="Password"
+                {...reg("password")}
                 id="password"
                 InputProps={{
                   endAdornment: (
@@ -129,6 +197,18 @@ const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
                 }}
               />
             </FormControl>
+            <FormControl sx={{ minWidth: "95%", margin: "0 20px" }}>
+              <TextField
+                required
+                error={!!errors.confirmPassword?.message}
+                helperText={errors.confirmPassword?.message}
+                type={showPassword ? "text" : "password"}
+                variant="outlined"
+                label="Confirm password"
+                {...reg("confirmPassword")}
+                id="password"
+              />
+            </FormControl>
             <Box
               sx={{
                 width: "100%",
@@ -143,7 +223,7 @@ const SignUpLayout: React.FC<SignUpLayoutProps> = () => {
                 Back
               </Button>
               <Button
-                disabled={isLoading}
+                disabled={areDirtyFields || isLoading}
                 type="submit"
                 variant="contained"
                 color="primary"
