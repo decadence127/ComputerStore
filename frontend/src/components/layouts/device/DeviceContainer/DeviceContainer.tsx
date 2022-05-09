@@ -13,13 +13,20 @@ import {
   useEditCartMutation,
   useGetUserCartQuery,
 } from "../../../../redux/services/cartService";
+import { useEffect, useState } from "react";
 
 export default function DeviceContainer({ item }: { item: CommodityData }) {
   const { isAuthenticated, id } = useSelector(
     (state: RootState) => state.userReducer
   );
-  const { data } = useGetUserCartQuery({ userId: String(id) });
+  const [skip, setSkip] = useState(true);
+  const { data } = useGetUserCartQuery({ userId: String(id) }, { skip });
 
+  useEffect(() => {
+    if (id) {
+      setSkip(false);
+    }
+  }, [id]);
   const [addToCart, { isLoading }] = useEditCartMutation();
   const navigate = useNavigate();
 

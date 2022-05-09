@@ -1,19 +1,19 @@
 /** @jsxImportSource @emotion/react */
+import React from "react";
+import { useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
 
 import logo from "../../../assets/logo512.me.png";
+import { RootState } from "../../../redux/store";
 import {
   CART_ROUTE,
   HOME_ROUTE,
   SIGN_IN_ROUTE,
 } from "../../../utils/constants/routeNames";
-import styles from "./styles";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
 import ProfileMenu from "../../profileMenu/ProfileMenu";
-import React from "react";
+import styles from "./styles";
 
 interface HeaderProps {}
 

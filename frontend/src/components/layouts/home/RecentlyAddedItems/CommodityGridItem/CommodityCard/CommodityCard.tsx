@@ -17,6 +17,7 @@ import {
 } from "../../../../../../redux/services/cartService";
 import { SIGN_IN_ROUTE } from "../../../../../../utils/constants/routeNames";
 import { snackActions } from "../../../../../../utils/helpers/snackBarUtils";
+import { useEffect, useState } from "react";
 
 interface CommodityCardProps {
   commodity?: CommodityState;
@@ -26,9 +27,16 @@ export default function CommodityCard({ commodity }: CommodityCardProps) {
   const { isAuthenticated, id } = useSelector(
     (state: RootState) => state.userReducer
   );
-  const { data } = useGetUserCartQuery({ userId: String(id) });
+  const [skip, setSkip] = useState(true);
+  const { data } = useGetUserCartQuery({ userId: String(id) }, { skip });
   const navigate = useNavigate();
   const [addToCart, { isLoading }] = useEditCartMutation();
+
+  useEffect(() => {
+    if (id) {
+      setSkip(false);
+    }
+  }, [id]);
 
   const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
