@@ -1,8 +1,7 @@
 import * as Yup from "yup";
+import "yup-phone";
 
 const nameSurname = /[A-Za-zА-Яа-я]+$/;
-const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 export const validationSchema = Yup.object().shape({
   firstname: Yup.string()
@@ -14,7 +13,7 @@ export const validationSchema = Yup.object().shape({
     .max(16, "Last name must be no more than 16 characters")
     .required("Last name is required"),
   phoneNumber: Yup.string()
-    .matches(phoneRegExp, "Phone number is not valid")
+    .phone(undefined, undefined, "Phone number is not valid")
     .required("Phone is required"),
   email: Yup.string()
     .email("Invalid email format")
