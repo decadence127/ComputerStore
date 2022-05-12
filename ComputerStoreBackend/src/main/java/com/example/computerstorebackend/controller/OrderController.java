@@ -45,11 +45,12 @@ public class OrderController {
     private EmailService emailService;
 
     @Autowired
-    public OrderController(OrderMapper orderMapper, OrderService orderService, CartService cartService, CommodityService commodityService) {
+    public OrderController(OrderMapper orderMapper, OrderService orderService, CartService cartService, CommodityService commodityService, EmailService emailService) {
         this.orderMapper = orderMapper;
         this.orderService = orderService;
         this.cartService = cartService;
         this.commodityService = commodityService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/order")
@@ -82,11 +83,11 @@ public class OrderController {
                 + order.getAccount().getAccountData().getFirstname()
                 + " "
                 + order.getAccount().getAccountData().getLastname()
-                + "! Ваш заказ: " + order.getCommodities() + " был принят на обработку. "
-                + "Дата заказа: " + order.getOrderDate()
-                + "Адрес: " + order.getAddress()
-                + "Метод доставки: " + order.getDelivery()
-                + "Общая стоимость заказа: " + order.getCommodities().stream().map(Commodity::getPrice);
+                + "! Ваш заказ: " + order.getCommodities().stream().map(Commodity::getName) + " был принят на обработку. "
+                + " Дата заказа: " + order.getOrderDate()
+                + " Адрес: " + order.getAddress()
+                + " Метод доставки: " + order.getDelivery()
+                + " Общая стоимость заказа: " + order.getCommodities().stream().map(Commodity::getPrice);
         emailService.sendSimpleMail(order.getAccount().getEmail(), "Order #" + order.getId(), orderString);
         return ResponseEntity.ok(orderService.save(order));
     }
