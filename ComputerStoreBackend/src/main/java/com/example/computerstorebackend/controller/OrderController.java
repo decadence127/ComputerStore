@@ -11,6 +11,7 @@ import com.example.computerstorebackend.model.Condition;
 import com.example.computerstorebackend.model.Order;
 import com.example.computerstorebackend.service.cart.CartService;
 import com.example.computerstorebackend.service.commodity.CommodityService;
+import com.example.computerstorebackend.service.email.EmailService;
 import com.example.computerstorebackend.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class OrderController {
     private OrderService orderService;
     private CartService cartService;
     private CommodityService commodityService;
+    private EmailService emailService;
 
     @Autowired
     public OrderController(OrderMapper orderMapper, OrderService orderService, CartService cartService, CommodityService commodityService) {
@@ -76,6 +78,16 @@ public class OrderController {
         cartService.update(cart);
         order.setCondition(Condition.PROCESSING);
         order.setOrderDate(LocalDate.now());
+        String orderString = "Здравствуйте, "
+                + order.getAccount().getAccountData().getFirstname()
+                + " "
+                + order.getAccount().getAccountData().getLastname()
+                + "! Ваш заказ: " + order.getCommodities() + " был принят на обработку. "
+                + "Дата заказа: " + order.getOrderDate()
+                + "Адрес: " + order.getAddress()
+                + "Метод доставки: " + order.getDelivery()
+                + "Общая стоимость заказа: " + order.getCommodities().stream().map(Commodity::getPrice);
+        emailService.sendSimpleMail(order.getAccount().getEmail(), "Order #" + order.getId(), orderString);
         return ResponseEntity.ok(orderService.save(order));
     }
 
